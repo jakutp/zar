@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZAR Gizlilik</title>
+  <meta name="description" content="ZAR uygulamasının gizlilik politikası: hangi veriler, nereye, neden gider.">
+  <style>
+    :root { --bg: #fafafa; --fg: #16181d; --muted: #4f5460; --line: #e3e5ea; --link: #2457c5; --card: #ffffff; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #121316; --fg: #e8e9ec; --muted: #a9adb7; --line: #2a2d33; --link: #8db0ff; --card: #1a1c20; } }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 720px; margin: 0 auto; padding: 40px 16px 64px; }
+    h1 { font-size: 1.8rem; margin: 0 0 4px; letter-spacing: -0.02em; }
+    h2 { font-size: 1.15rem; margin: 32px 0 8px; }
+    p, li { color: var(--muted); }
+    a { color: var(--link); }
+    .date { font-size: 0.9rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; background: var(--card); }
+    th, td { text-align: left; vertical-align: top; padding: 8px; border: 1px solid var(--line); color: var(--muted); }
+    th { color: var(--fg); }
+    .wrap { overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ZAR Gizlilik Politikası</h1>
+    <p class="date">Son güncelleme: 14 Ekim 2026</p>
+
+    <h2>Kısaca</h2>
+    <p>ZAR'ın kendi sunucusu, hesap sistemi, reklamı ve analiz/izleme aracı yoktur. Kişisel verilerini biz toplamayız ve saklamayız. Uygulama, öneri üretmek için konum koordinatlarını aşağıda listelenen açık veri servislerine doğrudan cihazından gönderir. Bu servisler isteği, IP adresin ve tarayıcı bilgisiyle birlikte kendi politikalarına göre işler.</p>
+
+    <h2>Konum</h2>
+    <p>Konum iznini verirsen cihazın konumu yalnızca uygulama açıkken ve sen zar kurduğunda okunur. İzin vermezsen haritadan ya da adres yazarak konum seçebilirsin. Son seçtiğin konum, bir sonraki açılışta kullanılmak üzere yalnızca cihazında saklanır.</p>
+
+    <h2>Cihazından giden istekler</h2>
+    <div class="wrap">
+      <table>
+        <thead><tr><th>Servis</th><th>Gönderilen</th><th>Neden</th></tr></thead>
+        <tbody>
+          <tr><td>OpenStreetMap Overpass API (overpass-api.de ve aynaları: overpass.openstreetmap.fr, overpass.private.coffee, maps.mail.ru)</td><td>Konum koordinatları ve arama yarıçapı</td><td>Yakındaki mekanlar</td></tr>
+          <tr><td>OpenStreetMap Nominatim</td><td>Konum çevresindeki kutu, yazdığın adres ya da koordinat</td><td>Mekan ve adres arama</td></tr>
+          <tr><td>OpenStreetMap harita karoları</td><td>Görüntülenen harita bölgesi</td><td>Harita</td></tr>
+          <tr><td>Overture Maps (tiles.overturemaps.org, stac.overturemaps.org)</td><td>Konumun bulunduğu harita karosu</td><td>Yedek mekan verisi</td></tr>
+          <tr><td>Vikipedi ve Wikidata (Wikimedia)</td><td>Konum koordinatları, madde kimlikleri</td><td>Yakındaki ansiklopedik yerler</td></tr>
+          <tr><td>Open-Meteo</td><td>Konum koordinatları</td><td>Hava durumu ve yerel saat</td></tr>
+          <tr><td>Google Fonts</td><td>Standart yazı tipi isteği</td><td>Yazı tipleri ve simgeler</td></tr>
+          <tr><td>jakutp.github.io (GitHub Pages)</td><td>Yapılandırma dosyası isteği</td><td>Bir servisin gerektiğinde uzaktan kapatılabilmesi</td></tr>
+          <tr><td>Google Gemini (yalnızca kendi API anahtarını girersen)</td><td>Yazdığın niyet metni, konum adı ve koordinatları, yakındaki mekan listesi</td><td>İsteğe bağlı yapay zekâ betimlemesi</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Mekan kartındaki bir bağlantıya (web sitesi, Google Haritalar yol tarifi, Vikipedi) dokunduğunda sayfa sistem tarayıcısında açılır; o andan sonra o sitenin politikası geçerlidir.</p>
+
+    <h2>Cihazında saklananlar</h2>
+    <p>Uygulama, cihazının yerel depolamasında (localStorage ve IndexedDB) şunları tutar: son konum, tema ve ayarlar, servis yanıtlarının geçici önbelleği (en çok birkaç hafta), kabul/veto ettiğin öneri türlerinden öğrenilen tercih ağırlıkları ve girdiysen Gemini API anahtarın. Bunlar cihazından dışarı gönderilmez. Uygulamayı silmek ya da uygulama verilerini temizlemek hepsini kaldırır.</p>
+
+    <h2>Çocuklar</h2>
+    <p>ZAR çocuklara yönelik değildir ve bilerek kimseden kişisel veri toplamaz.</p>
+
+    <h2>Haklarınız ve iletişim</h2>
+    <p>Biz senin hakkında veri tutmadığımız için silinecek ya da dışa aktarılacak bir kayıt da yoktur. Sorular ve istekler için: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. Üçüncü taraf servislerdeki veriler için ilgili servisin politikasına başvurabilirsin: <a href="https://osmfoundation.org/wiki/Privacy_Policy">OSMF</a>, <a href="https://foundation.wikimedia.org/wiki/Policy:Privacy_policy">Wikimedia</a>, <a href="https://open-meteo.com/en/terms">Open-Meteo</a>, <a href="https://policies.google.com/privacy">Google</a>.</p>
+
+    <h2>Değişiklikler</h2>
+    <p>Bu politika değişirse bu sayfa ve üstteki tarih güncellenir.</p>
+  </main>
+</body>
+</html>
