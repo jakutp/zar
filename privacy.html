@@ -24,7 +24,8 @@
 <body>
   <main>
     <h1>ZAR Gizlilik Politikası</h1>
-    <p class="date">Son güncelleme: 14 Ekim 2026</p>
+    <p class="date">Son güncelleme: 15 Ekim 2026 • Sürüm 2026-10-15 • <a href="terms.html">Kullanım Koşulları</a></p>
+    <p>Veri sorumlusu: Kutay Türker (ZAR geliştiricisi). İletişim: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>.</p>
 
     <h2>Kısaca</h2>
     <p>ZAR'ın kendi sunucusu, hesap sistemi, reklamı ve analiz/izleme aracı yoktur. Kişisel verilerini biz toplamayız ve saklamayız. Uygulama, öneri üretmek için konum koordinatlarını aşağıda listelenen açık veri servislerine doğrudan cihazından gönderir. Bu servisler isteği, IP adresin ve tarayıcı bilgisiyle birlikte kendi politikalarına göre işler.</p>
@@ -52,16 +53,32 @@
     <p>Mekan kartındaki bir bağlantıya (web sitesi, Google Haritalar yol tarifi, Vikipedi) dokunduğunda sayfa sistem tarayıcısında açılır; o andan sonra o sitenin politikası geçerlidir.</p>
 
     <h2>Cihazında saklananlar</h2>
-    <p>Uygulama, cihazının yerel depolamasında (localStorage ve IndexedDB) şunları tutar: son konum, tema ve ayarlar, servis yanıtlarının geçici önbelleği (en çok birkaç hafta), kabul/veto ettiğin öneri türlerinden öğrenilen tercih ağırlıkları ve girdiysen Gemini API anahtarın. Bunlar cihazından dışarı gönderilmez. Uygulamayı silmek ya da uygulama verilerini temizlemek hepsini kaldırır.</p>
+    <p>Uygulama, cihazının yerel depolamasında (localStorage ve IndexedDB) şunları tutar: son konum, tema ve ayarlar, servis yanıtlarının geçici önbelleği (en çok birkaç hafta), kabul/veto ettiğin öneri türlerinden öğrenilen tercih ağırlıkları girdiysen Gemini API anahtarın, keşif puanın/seviyen ve sözleşme ile izin kayıtların. Bunlar cihazından dışarı gönderilmez. Uygulamayı silmek ya da uygulama verilerini temizlemek hepsini kaldırır.</p>
+
+    <h2>İsteğe bağlı izinler (açık rıza)</h2>
+    <p>Uygulamaya ilk girişte, aşağıdaki amaçların her biri için ayrı ayrı "evet" ya da "hayır" seçmen istenir. Bu izinler isteğe bağlıdır; vermemen uygulamayı kullanmana engel değildir. İzin vermediğin bir amaç için verin kullanılmaz. Seçimini istediğin zaman <b>Ayarlar → İzinlerim ve sözleşmeler</b> bölümünden değiştirebilir ya da geri çekebilirsin; geri çekme ileriye dönük etkilidir.</p>
+    <div class="wrap"><table>
+      <tr><th>Amaç</th><th>Kapsam</th><th>Bugünkü durum</th></tr>
+      <tr><td>Ürünü geliştirme ve öneri sistemini eğitme</td><td>Hangi önerileri kabul ettiğin, elediğin ve tamamladığın gibi kullanım bilgileri; adın, e-postan ya da hesap bilgisi olmadan. Öneri modelini ve uygulamayı iyileştirmek için kullanılabilir.</td><td>Bu bilgiler şu an yalnızca cihazında, öneri sıralamasını kişiselleştirmek için kullanılır; dışarı gönderilmez.</td></tr>
+      <tr><td>Kişiselleştirilmiş reklam ve sponsorlu öneriler</td><td>İleride reklam ya da sponsorlu mekân gösterilirse, ilgi alanlarına göre seçilmesi.</td><td>Uygulamada şu an reklam yoktur.</td></tr>
+      <tr><td>Kampanya, yenilik ve abonelik teklifleri</td><td>Yeni özellikler, kampanyalar ve ileride sunulabilecek ücretli abonelik hakkında uygulama içi bilgilendirme.</td><td>Şu an abonelik yoktur.</td></tr>
+    </table></div>
+    <p>Bu amaçlardan biri için verinin cihazından dışarı gönderilmesi ya da bir reklam veya analiz hizmet sağlayıcısıyla paylaşılması gündeme gelirse: (1) bu politika, hangi verinin kime ve neden aktarıldığını gösterecek şekilde önceden güncellenir, (2) App Store'daki gizlilik etiketi güncellenir, (3) cihazlar arası izleme söz konusuysa iOS'un izleme izni (App Tracking Transparency) ayrıca istenir ve (4) yalnızca o amaca "evet" demiş kullanıcılar için uygulanır. Metin değiştiğinde uygulama açılışında seçimin yeniden istenir.</p>
+
+    <h2>İzin kaydı</h2>
+    <p>Kimin, hangi amaca, ne zaman ve metnin hangi sürümüyle izin verdiği ya da izni geri çektiği; adın veya iletişim bilgin olmadan, cihaza özgü rastgele bir kimlikle birlikte cihazında değiştirilemez bir günlükte tutulur. Bu kaydı Ayarlar → İzinlerim ve sözleşmeler bölümünden görebilir ve dışa aktarabilirsin. İleride hesap ya da sunucu eklenirse kayıt, kanıt amacıyla bu kimlikle sunucuda da saklanabilir; bu durum bu politikada önceden belirtilir.</p>
+
+    <h2>Hukuki sebepler</h2>
+    <p>Konumun, öneri üretme hizmetini sunmak için (KVKK md. 5/2-c: sözleşmenin ifası) işlenir. İsteğe bağlı amaçlar yalnızca açık rızan ile (KVKK md. 5/1) işlenir. Avrupa Birliği ve Çin anakarası App Store'larında uygulama şu an sunulmamaktadır.</p>
 
     <h2>Çocuklar</h2>
     <p>ZAR çocuklara yönelik değildir ve bilerek kimseden kişisel veri toplamaz.</p>
 
     <h2>Haklarınız ve iletişim</h2>
-    <p>Biz senin hakkında veri tutmadığımız için silinecek ya da dışa aktarılacak bir kayıt da yoktur. Sorular ve istekler için: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. Üçüncü taraf servislerdeki veriler için ilgili servisin politikasına başvurabilirsin: <a href="https://osmfoundation.org/wiki/Privacy_Policy">OSMF</a>, <a href="https://foundation.wikimedia.org/wiki/Policy:Privacy_policy">Wikimedia</a>, <a href="https://open-meteo.com/en/terms">Open-Meteo</a>, <a href="https://policies.google.com/privacy">Google</a>.</p>
+    <p>KVKK md. 11 kapsamında verinin işlenip işlenmediğini öğrenme, düzeltme, silme, itiraz ve izinlerini geri çekme haklarına sahipsin. Verilerin cihazında tutulduğundan uygulama verilerini silmek tüm kayıtları kaldırır; izin kaydını uygulama içinden dışa aktarabilirsin. Sorular ve istekler için: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. Üçüncü taraf servislerdeki veriler için ilgili servisin politikasına başvurabilirsin: <a href="https://osmfoundation.org/wiki/Privacy_Policy">OSMF</a>, <a href="https://foundation.wikimedia.org/wiki/Policy:Privacy_policy">Wikimedia</a>, <a href="https://open-meteo.com/en/terms">Open-Meteo</a>, <a href="https://policies.google.com/privacy">Google</a>.</p>
 
     <h2>Değişiklikler</h2>
-    <p>Bu politika değişirse bu sayfa ve üstteki tarih güncellenir.</p>
+    <p>Bu politika değişirse bu sayfa, üstteki tarih ve sürüm güncellenir. İsteğe bağlı izinleri etkileyen bir değişiklikte uygulama açılışında onayın yeniden istenir; yeni bir amaç için önceden verdiğin izin geçerli sayılmaz.</p>
   </main>
 </body>
 </html>
