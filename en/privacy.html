@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZAR Privacy Policy</title>
+  <meta name="description" content="ZAR uygulamasının gizlilik politikası: hangi veriler, nereye, neden gider.">
+  <style>
+    :root { --bg: #fafafa; --fg: #16181d; --muted: #4f5460; --line: #e3e5ea; --link: #2457c5; --card: #ffffff; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #121316; --fg: #e8e9ec; --muted: #a9adb7; --line: #2a2d33; --link: #8db0ff; --card: #1a1c20; } }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 720px; margin: 0 auto; padding: 40px 16px 64px; }
+    h1 { font-size: 1.8rem; margin: 0 0 4px; letter-spacing: -0.02em; }
+    h2 { font-size: 1.15rem; margin: 32px 0 8px; }
+    p, li { color: var(--muted); }
+    a { color: var(--link); }
+    .date { font-size: 0.9rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; background: var(--card); }
+    th, td { text-align: left; vertical-align: top; padding: 8px; border: 1px solid var(--line); color: var(--muted); }
+    th { color: var(--fg); }
+    .wrap { overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ZAR Privacy Policy</h1>
+    <p class="date">Last updated: 15 October 2026 • Version 2026-10-15 • <a href="terms.html">Terms of Use</a> • <a href="../privacy.html" hreflang="tr">Türkçe</a></p>
+    <p>Data controller: Kutay Türker (developer of ZAR). Contact: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. This policy is published in Turkish and English; if they conflict, the Turkish text prevails.</p>
+
+    <h2>In short</h2>
+    <p>ZAR has no server of its own, no account system, no ads and no analytics or tracking tools. We do not collect or store your personal data. To create suggestions, the app sends location coordinates directly from your device to the open data services listed below. These services process the request together with your IP address and browser information under their own policies.</p>
+
+    <h2>Location</h2>
+    <p>If you grant location permission, your device location is read only while the app is open and when you start a search. If you do not, you can pick a location on the map or by typing an address. The last location you chose is stored only on your device for the next launch.</p>
+
+    <h2>Requests sent from your device</h2>
+    <div class="wrap"><table>
+      <tr><th>Service</th><th>What is sent</th><th>Why</th></tr>
+      <tr><td>OpenStreetMap Overpass API (overpass-api.de and mirrors)</td><td>Coordinates and search radius</td><td>Nearby places</td></tr>
+      <tr><td>OpenStreetMap Nominatim</td><td>Area around the location, an address you type, or coordinates</td><td>Place and address search</td></tr>
+      <tr><td>OpenStreetMap map tiles</td><td>The map area being shown</td><td>Map</td></tr>
+      <tr><td>Overture Maps (tiles.overturemaps.org, stac.overturemaps.org)</td><td>The map tile containing the location</td><td>Backup place data</td></tr>
+      <tr><td>Wikipedia and Wikidata (Wikimedia)</td><td>Coordinates, item identifiers</td><td>Nearby encyclopedic places</td></tr>
+      <tr><td>Open-Meteo</td><td>Coordinates</td><td>Weather, forecast and local time</td></tr>
+      <tr><td>Google Fonts</td><td>Standard font request</td><td>Fonts and icons</td></tr>
+      <tr><td>jakutp.github.io (GitHub Pages)</td><td>Configuration file request</td><td>Remotely switching off a service if needed</td></tr>
+      <tr><td>Google Gemini (only if you enter your own API key)</td><td>Your intent text, place name, coordinates, list of nearby places</td><td>Optional AI description</td></tr>
+    </table></div>
+    <p>When you tap a link on a place card (website, Google Maps directions, Wikipedia), the page opens in the system browser and that site's policy applies from then on.</p>
+
+    <h2>Stored on your device</h2>
+    <p>The app keeps the following in local storage (localStorage and IndexedDB): last location, theme and settings, a temporary cache of service responses (up to a few weeks), preference weights learned from the suggestions you accept or skip, your Gemini API key if you entered one, your discovery points/level, and your terms and consent records. None of this is sent off your device. Deleting the app or clearing its data removes all of it.</p>
+
+    <h2>Optional permissions (explicit consent)</h2>
+    <p>On first launch you are asked to answer "yes" or "no" separately for each purpose below. These permissions are optional; refusing them does not prevent you from using the app. Your data is not used for any purpose you do not agree to. You can change or withdraw your choice at any time in <b>Settings → İzinlerim ve sözleşmeler (My permissions and agreements)</b>; withdrawal takes effect for the future.</p>
+    <div class="wrap"><table>
+      <tr><th>Purpose</th><th>Scope</th><th>Status today</th></tr>
+      <tr><td>Improving the product and training the recommendation system</td><td>Usage information such as which suggestions you accept, skip and complete, without your name, e-mail or account details; may be used to improve the recommendation model and the app.</td><td>This information is currently used only on your device to personalise suggestion ranking; it is not sent anywhere.</td></tr>
+      <tr><td>Personalised ads and sponsored suggestions</td><td>If ads or sponsored places are shown in the future, choosing them based on your interests.</td><td>There are no ads in the app today.</td></tr>
+      <tr><td>Promotions, news and subscription offers</td><td>In-app information about new features, promotions and paid subscriptions that may be offered in the future.</td><td>There is no subscription today.</td></tr>
+    </table></div>
+    <p>If data ever needs to leave your device for one of these purposes, or be shared with an advertising or analytics provider: (1) this policy will first be updated to show which data goes to whom and why, (2) the App Store privacy label will be updated, (3) where cross-app tracking is involved, iOS tracking permission (App Tracking Transparency) will be requested separately, and (4) it will apply only to users who answered "yes" to that purpose. When the texts change, the app asks for your choices again at launch.</p>
+
+    <h2>Statement of explicit consent</h2>
+    <p>On first launch the following statement is confirmed: <i>"I have read, understood and accept the Terms of Use and the Privacy Policy. I give my explicit consent to the processing of my personal data for the purposes I answer 'yes' to."</i> Accepting the terms is required; consent to optional purposes is given freely and separately for each purpose.</p>
+
+    <h2>Consent record</h2>
+    <p>Who consented to which purpose, when, and under which version of the texts (or withdrew consent) is kept on your device in an append-only log, with a random device-specific identifier and without your name or contact details. You can view and export this record in Settings. If an account or server is added in the future, the record may also be stored on the server under this identifier for evidence purposes; this will be stated in this policy in advance.</p>
+
+    <h2>Legal bases</h2>
+    <p>Your location is processed to provide the suggestion service (performance of a contract, Turkish Personal Data Protection Law (KVKK) art. 5/2-c). Optional purposes are processed only with your explicit consent (KVKK art. 5/1). The app is currently not offered on the App Store in the European Union or mainland China.</p>
+
+    <h2>Children</h2>
+    <p>ZAR is not directed at children and does not knowingly collect personal data from anyone.</p>
+
+    <h2>Your rights and contact</h2>
+    <p>Under KVKK art. 11 you have the right to learn whether your data is processed, and to request correction, deletion, objection and withdrawal of consent. Because your data is kept on your device, deleting the app data removes all records; you can export your consent record from within the app. Questions and requests: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. For data held by third-party services, see their policies: <a href="https://osmfoundation.org/wiki/Privacy_Policy">OSMF</a>, <a href="https://foundation.wikimedia.org/wiki/Policy:Privacy_policy">Wikimedia</a>, <a href="https://open-meteo.com/en/terms">Open-Meteo</a>, <a href="https://policies.google.com/privacy">Google</a>.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, this page, the date and the version above are updated. For changes affecting optional permissions, the app asks for your consent again at launch; consent given earlier does not count for a new purpose.</p>
+  </main>
+</body>
+</html>
