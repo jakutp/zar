@@ -53,7 +53,7 @@
     <p>Mekan kartındaki bir bağlantıya (web sitesi, Google Haritalar yol tarifi, Vikipedi) dokunduğunda sayfa sistem tarayıcısında açılır; o andan sonra o sitenin politikası geçerlidir.</p>
 
     <h2>Cihazında saklananlar</h2>
-    <p>Uygulama, cihazının yerel depolamasında (localStorage ve IndexedDB) şunları tutar: son konum, tema ve ayarlar, servis yanıtlarının geçici önbelleği (en çok birkaç hafta), kabul/veto ettiğin öneri türlerinden öğrenilen tercih ağırlıkları girdiysen Gemini API anahtarın, keşif puanın/seviyen ve sözleşme ile izin kayıtların. Bunlar cihazından dışarı gönderilmez. Uygulamayı silmek ya da uygulama verilerini temizlemek hepsini kaldırır.</p>
+    <p>Uygulama, cihazının yerel depolamasında (localStorage ve IndexedDB) şunları tutar: son konum, tema ve ayarlar, servis yanıtlarının geçici önbelleği (en çok birkaç hafta), kabul/veto ettiğin öneri türlerinden öğrenilen tercih ağırlıkları girdiysen Gemini API anahtarın, keşif puanın/seviyen ve sözleşme ile izin kayıtların (cihaz kimliği dahil). Bunlar cihazından dışarı gönderilmez. Uygulamayı silmek ya da uygulama verilerini temizlemek hepsini kaldırır.</p>
 
     <h2>İsteğe bağlı izinler (açık rıza)</h2>
     <p>Uygulamaya ilk girişte, aşağıdaki amaçların her biri için ayrı ayrı "evet" ya da "hayır" seçmen istenir. Bu izinler isteğe bağlıdır; vermemen uygulamayı kullanmana engel değildir. İzin vermediğin bir amaç için verin kullanılmaz. Seçimini istediğin zaman <b>Ayarlar → İzinlerim ve sözleşmeler</b> bölümünden değiştirebilir ya da geri çekebilirsin; geri çekme ileriye dönük etkilidir.</p>
@@ -69,7 +69,7 @@
     <p>Uygulamaya ilk girişte şu beyan onaylanır: <i>"Kullanım Koşulları'nı ve Gizlilik Politikası'nı okudum, anladım ve kabul ediyorum. 'Evet' dediğim amaçlar için kişisel verilerimin işlenmesine açık rızam vardır."</i> Koşulların kabulü zorunludur; isteğe bağlı amaçlara verilen rıza her amaç için ayrı ayrı ve özgürce verilir.</p>
 
     <h2>İzin kaydı</h2>
-    <p>Kimin, hangi amaca, ne zaman ve metnin hangi sürümüyle izin verdiği ya da izni geri çektiği; adın veya iletişim bilgin olmadan, cihaza özgü rastgele bir kimlikle birlikte cihazında değiştirilemez bir günlükte tutulur. Bu kaydı Ayarlar → İzinlerim ve sözleşmeler bölümünden görebilir ve dışa aktarabilirsin. İleride hesap ya da sunucu eklenirse kayıt, kanıt amacıyla bu kimlikle sunucuda da saklanabilir; bu durum bu politikada önceden belirtilir.</p>
+    <p>Kimin, hangi amaca, ne zaman ve metnin hangi sürümüyle izin verdiği ya da izni geri çektiği; adın veya iletişim bilgin olmadan, cihaza özgü rastgele bir kurulum kimliği ve iOS'ta Apple'ın tedarikçi cihaz kimliği (identifierForVendor; reklam kimliği değildir, izleme için kullanılmaz) ile birlikte cihazında değiştirilemez bir günlükte tutulur. Günlükte ayrıca uygulama sürümü ve dil yer alır. Bu kaydı Ayarlar → İzinlerim ve sözleşmeler bölümünden görebilir ve dışa aktarabilirsin. İleride hesap ya da sunucu eklenirse kayıt, kanıt amacıyla bu kimlikle sunucuda da saklanabilir; bu durum bu politikada önceden belirtilir.</p>
 
     <h2>Hukuki sebepler</h2>
     <p>Konumun, öneri üretme hizmetini sunmak için (KVKK md. 5/2-c: sözleşmenin ifası) işlenir. İsteğe bağlı amaçlar yalnızca açık rızan ile (KVKK md. 5/1) işlenir. Avrupa Birliği ve Çin anakarası App Store'larında uygulama şu an sunulmamaktadır.</p>
