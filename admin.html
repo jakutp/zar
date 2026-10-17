@@ -64,10 +64,19 @@
       firebase.initializeApp(FIREBASE_CONFIG);
       const auth = firebase.auth();
       const db = firebase.firestore();
-      // Yalnız kendi Storage bucket'ımızdan gelen URL'leri <img src> olarak basarız (başka bir
-      // yerden gelen "photoUrl" varsa göstermeyiz — veri Firestore'da kullanıcı tarafından
-      // yazılabildiği için bunu asla kör güvenmiyoruz).
-      const PHOTO_URL_PREFIX = `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_CONFIG.storageBucket}/o/completions%2F`;
+      // Yalnız kendi Storage bucket'ımızdaki, TAM OLARAK o kaydın sahibinin kendi klasöründeki bir
+      // dosyaya işaret eden URL'leri <img src> olarak basarız. `URL` ile ayrıştırıp origin ve yolu
+      // ayrı ayrı kontrol ediyoruz (düz metin `indexOf`/prefix kontrolü "https://.../o/completions%2F
+      // ../../../baska-bucket/..." gibi bir yolla atlatılabilir — tarayıcı "../" segmentlerini
+      // normalize eder, ayrıştırılmış pathname bunu zaten çözümlenmiş haliyle verir).
+      function isTrustedPhotoUrl(url, uid) {
+        if (!url || typeof url !== 'string') return false;
+        let u;
+        try { u = new URL(url); } catch (e) { return false; }
+        if (u.origin !== 'https://firebasestorage.googleapis.com') return false;
+        const expectedPrefix = `/v0/b/${FIREBASE_CONFIG.storageBucket}/o/completions%2F${uid}%2F`;
+        return u.pathname.startsWith(expectedPrefix) && !u.pathname.slice(expectedPrefix.length).includes('%2F');
+      }
       let unsub = null;
 
       document.getElementById('btnLogin').addEventListener('click', async () => {
@@ -151,7 +160,7 @@
           who.appendChild(badge);
           card.appendChild(who);
 
-          if (c.photoUrl && typeof c.photoUrl === 'string' && c.photoUrl.indexOf(PHOTO_URL_PREFIX) === 0) {
+          if (isTrustedPhotoUrl(c.photoUrl, c.uid)) {
             const img = document.createElement('img');
             img.className = 'photo';
             img.src = c.photoUrl;
