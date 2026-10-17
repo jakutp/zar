@@ -24,11 +24,11 @@
 <body>
   <main>
     <h1>ZAR Gizlilik Politikası</h1>
-    <p class="date">Son güncelleme: 15 Ekim 2026 • Sürüm 2026-10-15 • <a href="terms.html">Kullanım Koşulları</a> • <a href="en/privacy.html" hreflang="en">English</a></p>
+    <p class="date">Son güncelleme: 17 Ekim 2026 • Sürüm 2026-10-17 • <a href="terms.html">Kullanım Koşulları</a> • <a href="en/privacy.html" hreflang="en">English</a></p>
     <p>Veri sorumlusu: Kutay Türker (ZAR geliştiricisi). İletişim: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>.</p>
 
     <h2>Kısaca</h2>
-    <p>ZAR'ın kendi sunucusu, hesap sistemi, reklamı ve analiz/izleme aracı yoktur. Kişisel verilerini biz toplamayız ve saklamayız. Uygulama, öneri üretmek için konum koordinatlarını aşağıda listelenen açık veri servislerine doğrudan cihazından gönderir. Bu servisler isteği, IP adresin ve tarayıcı bilgisiyle birlikte kendi politikalarına göre işler.</p>
+    <p>ZAR'ın kendi sunucusu, reklamı ve analiz/izleme aracı yoktur. Hesap açmadan, <b>misafir olarak</b> uygulamanın tüm önerme/keşif özelliklerini kullanabilirsin; bu modda kişisel verini biz toplamayız ve saklamayız. Konum koordinatlarını, öneri üretmek için aşağıda listelenen açık veri servislerine doğrudan cihazından göndeririz; bu servisler isteği, IP adresin ve tarayıcı bilgisiyle birlikte kendi politikalarına göre işler. <b>İsteğe bağlı olarak</b> bir hesap açıp tamamladığın etkinlikleri kanıt fotoğrafıyla onaya gönderebilirsin; bu durumda hesap ve etkinlik verilerin Google'ın Firebase altyapısında saklanır — ayrıntılar aşağıda "Hesap sistemi, fotoğraf onayı ve Firebase" bölümünde.</p>
 
     <h2>Konum</h2>
     <p>Konum iznini verirsen cihazın konumu yalnızca uygulama açıkken ve sen zar kurduğunda okunur. İzin vermezsen haritadan ya da adres yazarak konum seçebilirsin. Son seçtiğin konum, bir sonraki açılışta kullanılmak üzere yalnızca cihazında saklanır.</p>
@@ -47,13 +47,22 @@
           <tr><td>Google Fonts</td><td>Standart yazı tipi isteği</td><td>Yazı tipleri ve simgeler</td></tr>
           <tr><td>jakutp.github.io (GitHub Pages)</td><td>Yapılandırma dosyası isteği</td><td>Bir servisin gerektiğinde uzaktan kapatılabilmesi</td></tr>
           <tr><td>Google Gemini (yalnızca kendi API anahtarını girersen)</td><td>Yazdığın niyet metni, konum adı ve koordinatları, yakındaki mekan listesi</td><td>İsteğe bağlı yapay zekâ betimlemesi</td></tr>
+          <tr><td>Google Firebase (gstatic.com — SDK dosyaları)</td><td>Yok (statik dosya indirme)</td><td>Hesap sistemi kütüphanesi; hesap açsan da açmasan da uygulama her başladığında bu dosyalar indirilir, ama hesap açmazsan Firebase'e kimlik/veri gönderilmez</td></tr>
+          <tr><td>Google Firebase Authentication (yalnızca hesap açarsan/giriş yaparsan)</td><td>E-posta adresin, parolan (parolan bize değil doğrudan Google'a gider, biz görmeyiz)</td><td>Hesap oluşturma ve oturum açma</td></tr>
+          <tr><td>Google Cloud Firestore (yalnızca hesaplıyken)</td><td>Hesap kimliğin, e-postan; etkinlik tamamlama kaydı gönderirsen: mekan bilgisi, GPS konumun, tamamlama zamanı, fotoğraf bağlantısı</td><td>Profilini ve etkinlik onay kayıtlarını saklamak, onay durumunu senkronlamak</td></tr>
+          <tr><td>Google Cloud Storage (yalnızca bir etkinliği fotoğrafla onaya gönderirsen)</td><td>Yüklediğin kanıt fotoğrafı</td><td>Etkinlik onayı için fotoğrafı saklamak</td></tr>
         </tbody>
       </table>
     </div>
     <p>Mekan kartındaki bir bağlantıya (web sitesi, Google Haritalar yol tarifi, Vikipedi) dokunduğunda sayfa sistem tarayıcısında açılır; o andan sonra o sitenin politikası geçerlidir.</p>
 
+    <h2>Hesap sistemi, fotoğraf onayı ve Firebase</h2>
+    <p>Hesap açmak tamamen isteğe bağlıdır; açmazsan uygulama hiçbir şeyi değiştirmeden, hesapsız haliyle çalışmaya devam eder. Hesap açarsan (e-posta ve parola ile) kimlik doğrulamasını ve verilerini Google'ın Firebase altyapısı (Authentication, Firestore veritabanı, Storage dosya deposu — sunucuları Avrupa ve ABD'de) üzerinde tutarız; bu, Google'ın bir alt işleyici (veri işleyen) olarak kullanıldığı anlamına gelir. Parolan asla bize ulaşmaz, doğrudan Google'ın kimlik doğrulama sistemine gider ve biz onu göremeyiz.</p>
+    <p>Bir etkinliği "tamamladım" deyip <b>kanıt fotoğrafı</b> yüklediğinde: fotoğraf, o etkinliğin mekân bilgisi, tamamlama anındaki GPS konumun ve zaman damgası Firebase'e kaydedilir ve "onay bekliyor" durumuna girer. Bu kayıt, uygulama geliştiricisi (veri sorumlusu) tarafından —şu an için elle, ileride isteğe bağlı olarak otomatik bir görsel kontrolle— incelenip onaylanır ya da reddedilir; onaylanırsa keşif puanın verilir. Geliştirici bu inceleme sırasında fotoğrafını, mekân bilgini ve o anki konumunu görür. Bu veriler, hesabını silene ya da ayrıca silinmesini istemene kadar saklanır.</p>
+    <p>Hesabını <b>Ayarlar → Hesap → hesabımı sil</b> ile istediğin zaman kalıcı olarak silebilirsin; bu, profilini, tüm etkinlik onay kayıtlarını ve yüklediğin fotoğrafları Firebase'den siler (yerel cihazındaki keşif puanı/geçmiş ayrı tutulur, o da Ayarlar'dan temizlenebilir). Firebase'in kendi alt yüklenicileri ve veri işleme uygulamaları için <a href="https://firebase.google.com/support/privacy">Firebase Gizlilik ve Güvenlik</a> sayfasına bakabilirsin.</p>
+
     <h2>Cihazında saklananlar</h2>
-    <p>Uygulama, cihazının yerel depolamasında (localStorage ve IndexedDB) şunları tutar: son konum, tema ve ayarlar, servis yanıtlarının geçici önbelleği (en çok birkaç hafta), kabul/veto ettiğin öneri türlerinden öğrenilen tercih ağırlıkları girdiysen Gemini API anahtarın, keşif puanın/seviyen ve sözleşme ile izin kayıtların (cihaz kimliği dahil). Bunlar cihazından dışarı gönderilmez. Uygulamayı silmek ya da uygulama verilerini temizlemek hepsini kaldırır.</p>
+    <p>Uygulama, cihazının yerel depolamasında (localStorage ve IndexedDB) şunları tutar: son konum, tema ve ayarlar, servis yanıtlarının geçici önbelleği (en çok birkaç hafta), kabul/veto ettiğin öneri türlerinden öğrenilen tercih ağırlıkları girdiysen Gemini API anahtarın, keşif puanın/seviyen, sözleşme ile izin kayıtların (cihaz kimliği dahil) ve hesap açtıysan Firebase'in kendi oturum bilgisi (seni tekrar giriş yapmadan tanıması için). Bunlardan hesap/oturum bilgisi hariç hiçbiri cihazından dışarı gönderilmez. Uygulamayı silmek ya da uygulama verilerini temizlemek hepsini kaldırır (hesap açıksa Firebase'deki verin ayrıca "hesabımı sil" ile silinmelidir).</p>
 
     <h2>İsteğe bağlı izinler (açık rıza)</h2>
     <p>Uygulamaya ilk girişte, aşağıdaki amaçların her biri için ayrı ayrı "evet" ya da "hayır" seçmen istenir. Bu izinler isteğe bağlıdır; vermemen uygulamayı kullanmana engel değildir. İzin vermediğin bir amaç için verin kullanılmaz. Seçimini istediğin zaman <b>Ayarlar → İzinlerim ve sözleşmeler</b> bölümünden değiştirebilir ya da geri çekebilirsin; geri çekme ileriye dönük etkilidir.</p>
@@ -72,7 +81,7 @@
     <p>Kimin, hangi amaca, ne zaman ve metnin hangi sürümüyle izin verdiği ya da izni geri çektiği; adın veya iletişim bilgin olmadan, cihaza özgü rastgele bir kurulum kimliği ve iOS'ta Apple'ın tedarikçi cihaz kimliği (identifierForVendor; reklam kimliği değildir, izleme için kullanılmaz) ile birlikte cihazında değiştirilemez bir günlükte tutulur. Günlükte ayrıca uygulama sürümü ve dil yer alır. Bu kaydı Ayarlar → İzinlerim ve sözleşmeler bölümünden görebilir ve dışa aktarabilirsin. İleride hesap ya da sunucu eklenirse kayıt, kanıt amacıyla bu kimlikle sunucuda da saklanabilir; bu durum bu politikada önceden belirtilir.</p>
 
     <h2>Hukuki sebepler</h2>
-    <p>Konumun, öneri üretme hizmetini sunmak için (KVKK md. 5/2-c: sözleşmenin ifası) işlenir. İsteğe bağlı amaçlar yalnızca açık rızan ile (KVKK md. 5/1) işlenir. Avrupa Birliği ve Çin anakarası App Store'larında uygulama şu an sunulmamaktadır.</p>
+    <p>Konumun, öneri üretme hizmetini sunmak için (KVKK md. 5/2-c: sözleşmenin ifası) işlenir. İsteğe bağlı amaçlar yalnızca açık rızan ile (KVKK md. 5/1) işlenir. Hesap açman ve etkinlik onay akışı da tamamen senin isteğinle başlattığın bir sözleşme ilişkisidir (KVKK md. 5/2-c); e-posta/parolanı girip "kayıt ol"a basman ve fotoğraf yükleyip göndermen açık bir eylem ve rızadır. Avrupa Birliği ve Çin anakarası App Store'larında uygulama şu an sunulmamaktadır.</p>
 
     <h2>Çocuklar</h2>
     <p>ZAR çocuklara yönelik değildir ve bilerek kimseden kişisel veri toplamaz.</p>

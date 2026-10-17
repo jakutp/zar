@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>ZAR Admin</title>
+  <style>
+    :root { --bg: #fafafa; --fg: #16181d; --muted: #4f5460; --line: #e3e5ea; --link: #2457c5; --card: #ffffff; --ok: #1a7f37; --bad: #c22525; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #121316; --fg: #e8e9ec; --muted: #a9adb7; --line: #2a2d33; --link: #8db0ff; --card: #1a1c20; } }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+    h1 { font-size: 1.4rem; margin: 0 0 16px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+    .muted { color: var(--muted); font-size: 0.85rem; }
+    input { width: 100%; box-sizing: border-box; padding: 10px; margin: 6px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--fg); }
+    button { padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; font-size: 0.9rem; }
+    button.primary { background: var(--link); color: #fff; border-color: var(--link); }
+    button.ok { border-color: var(--ok); color: var(--ok); }
+    button.bad { border-color: var(--bad); color: var(--bad); }
+    img.photo { max-width: 100%; border-radius: 8px; margin: 8px 0; display: block; }
+    .row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; border: 1px solid var(--line); }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ZAR — Onay Paneli</h1>
+    <p class="muted">Bu sayfa herkese açık URL'de ama yetki Firestore kurallarıyla sağlanıyor: yalnızca <code>admins/&lt;uid&gt;</code> koleksiyonunda kaydı olan hesap bekleyen kayıtları görüp onaylayabilir.</p>
+
+    <div id="loginCard" class="card">
+      <input id="email" type="email" placeholder="e-posta" autocomplete="username">
+      <input id="password" type="password" placeholder="parola" autocomplete="current-password">
+      <button id="btnLogin" class="primary">Giriş yap</button>
+      <div id="loginMsg" class="muted"></div>
+    </div>
+
+    <div id="panel" class="hidden">
+      <div class="row" style="justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <span id="whoami" class="muted"></span>
+        <button id="btnLogout">Çıkış</button>
+      </div>
+      <div id="list"></div>
+      <div id="emptyMsg" class="muted hidden">Bekleyen kayıt yok.</div>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script>
+    // GOREV_MEGA_PROMPT_HESAP_ONAY_SENARYO.md Faz 2: PLACEHOLDER'ları gerçek config ile değiştir
+    // (src/core/firebaseConfig.js ile aynı değerler).
+    const FIREBASE_CONFIG = {
+      apiKey: 'AIzaSyDJveC_7K2uN-dVjeIcQEtNN-xOBjTzGIw', authDomain: 'zar-rng-adventure.firebaseapp.com', projectId: 'zar-rng-adventure',
+      storageBucket: 'zar-rng-adventure.firebasestorage.app', messagingSenderId: '390109061725', appId: '1:390109061725:web:15e748e287cf593626e3b4'
+    };
+    const configured = Object.values(FIREBASE_CONFIG).every((v) => v && v !== 'PLACEHOLDER');
+    const loginMsg = document.getElementById('loginMsg');
+    if (!configured) {
+      loginMsg.textContent = 'Firebase henüz yapılandırılmadı (PLACEHOLDER config). Faz 2 tamamlanınca bu sayfa çalışır.';
+    } else {
+      firebase.initializeApp(FIREBASE_CONFIG);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      // Yalnız kendi Storage bucket'ımızdan gelen URL'leri <img src> olarak basarız (başka bir
+      // yerden gelen "photoUrl" varsa göstermeyiz — veri Firestore'da kullanıcı tarafından
+      // yazılabildiği için bunu asla kör güvenmiyoruz).
+      const PHOTO_URL_PREFIX = `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_CONFIG.storageBucket}/o/completions%2F`;
+      let unsub = null;
+
+      document.getElementById('btnLogin').addEventListener('click', async () => {
+        loginMsg.textContent = 'Giriş yapılıyor…';
+        try {
+          await auth.signInWithEmailAndPassword(document.getElementById('email').value.trim(), document.getElementById('password').value);
+        } catch (e) { loginMsg.textContent = 'Hata: ' + e.message; }
+      });
+      document.getElementById('btnLogout').addEventListener('click', () => auth.signOut());
+
+      auth.onAuthStateChanged(async (user) => {
+        if (unsub) { unsub(); unsub = null; }
+        if (!user) {
+          document.getElementById('loginCard').classList.remove('hidden');
+          document.getElementById('panel').classList.add('hidden');
+          return;
+        }
+        let adminDoc;
+        try { adminDoc = await db.collection('admins').doc(user.uid).get(); }
+        catch (e) { loginMsg.textContent = 'Yetki kontrolü başarısız: ' + e.message; await auth.signOut(); return; }
+        if (!adminDoc.exists) {
+          loginMsg.textContent = 'Bu hesap admin listesinde değil (Firestore → admins/' + user.uid + ' ekle).';
+          await auth.signOut();
+          return;
+        }
+        document.getElementById('loginCard').classList.add('hidden');
+        document.getElementById('panel').classList.remove('hidden');
+        document.getElementById('whoami').textContent = user.email;
+
+        unsub = db.collection('completions').where('status', 'in', ['pending_admin', 'pending_ai'])
+          .orderBy('createdAt', 'desc')
+          .onSnapshot(
+            (snap) => renderList(snap.docs.map((d) => Object.assign({ id: d.id }, d.data()))),
+            (err) => { document.getElementById('emptyMsg').textContent = 'Liste yüklenemedi: ' + err.message; document.getElementById('emptyMsg').classList.remove('hidden'); }
+          );
+      });
+
+      async function decide(id, status) {
+        let rejectionNote = null;
+        if (status === 'rejected') {
+          const input = prompt('Red nedeni (isteğe bağlı, kullanıcıya gösterilir):');
+          if (input === null) return; // vazgeçti: reddetme
+          rejectionNote = input || null;
+        }
+        try { await db.collection('completions').doc(id).update({ status, rejectionNote }); }
+        catch (e) { alert('İşlem başarısız: ' + e.message); }
+      }
+
+      // Güvenlik: tüm içerik innerHTML yerine textContent/DOM API ile oluşturulur, hiçbir Firestore
+      // alanı (uid, title, aiNotes, rejectionNote, completion id) HTML/JS olarak yorumlanmaz.
+      function renderList(items) {
+        const list = document.getElementById('list');
+        const empty = document.getElementById('emptyMsg');
+        empty.classList.toggle('hidden', items.length > 0);
+        list.innerHTML = '';
+        items.forEach((c) => {
+          const title = (c.optSnapshot && c.optSnapshot.title) || 'Etkinlik';
+          const when = c.completedAt ? new Date(c.completedAt).toLocaleString('tr-TR') : '-';
+
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          const head = document.createElement('div');
+          const strong = document.createElement('strong');
+          strong.textContent = title;
+          head.appendChild(strong);
+          const whenSpan = document.createElement('span');
+          whenSpan.className = 'muted';
+          whenSpan.textContent = ' • ' + when;
+          head.appendChild(whenSpan);
+          card.appendChild(head);
+
+          const who = document.createElement('div');
+          who.className = 'muted';
+          who.textContent = 'kullanıcı: ' + (c.uid || '-') + ' ';
+          const badge = document.createElement('span');
+          badge.className = 'badge';
+          badge.textContent = c.status === 'pending_ai'
+            ? 'AI: ' + (c.aiVerdict ? c.aiVerdict + (c.aiConfidence ? ' (' + Math.round(c.aiConfidence * 100) + '%)' : '') : 'bekleniyor')
+            : 'manuel onay';
+          who.appendChild(badge);
+          card.appendChild(who);
+
+          if (c.photoUrl && typeof c.photoUrl === 'string' && c.photoUrl.indexOf(PHOTO_URL_PREFIX) === 0) {
+            const img = document.createElement('img');
+            img.className = 'photo';
+            img.src = c.photoUrl;
+            img.alt = 'Kanıt fotoğrafı';
+            card.appendChild(img);
+          } else {
+            const noPhoto = document.createElement('div');
+            noPhoto.className = 'muted';
+            noPhoto.textContent = c.photoUrl ? 'Foto adresi beklenmeyen bir kaynaktan geliyor, gösterilmiyor.' : 'Foto yok.';
+            card.appendChild(noPhoto);
+          }
+
+          if (c.aiNotes) {
+            const aiNotes = document.createElement('div');
+            aiNotes.className = 'muted';
+            aiNotes.textContent = 'AI notu: ' + c.aiNotes;
+            card.appendChild(aiNotes);
+          }
+
+          const row = document.createElement('div');
+          row.className = 'row';
+          const btnOk = document.createElement('button');
+          btnOk.className = 'ok';
+          btnOk.textContent = 'Onayla';
+          btnOk.addEventListener('click', () => decide(c.id, 'approved'));
+          const btnBad = document.createElement('button');
+          btnBad.className = 'bad';
+          btnBad.textContent = 'Reddet';
+          btnBad.addEventListener('click', () => decide(c.id, 'rejected'));
+          row.appendChild(btnOk);
+          row.appendChild(btnBad);
+          card.appendChild(row);
+
+          list.appendChild(card);
+        });
+      }
+    }
+  </script>
+</body>
+</html>

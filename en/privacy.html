@@ -24,11 +24,11 @@
 <body>
   <main>
     <h1>ZAR Privacy Policy</h1>
-    <p class="date">Last updated: 15 October 2026 • Version 2026-10-15 • <a href="terms.html">Terms of Use</a> • <a href="../privacy.html" hreflang="tr">Türkçe</a></p>
+    <p class="date">Last updated: 17 October 2026 • Version 2026-10-17 • <a href="terms.html">Terms of Use</a> • <a href="../privacy.html" hreflang="tr">Türkçe</a></p>
     <p>Data controller: Kutay Türker (developer of ZAR). Contact: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. This policy is published in Turkish and English; if they conflict, the Turkish text prevails.</p>
 
     <h2>In short</h2>
-    <p>ZAR has no server of its own, no account system, no ads and no analytics or tracking tools. We do not collect or store your personal data. To create suggestions, the app sends location coordinates directly from your device to the open data services listed below. These services process the request together with your IP address and browser information under their own policies.</p>
+    <p>ZAR has no server of its own, no ads and no analytics or tracking tools. You can use every suggestion/discovery feature of the app as a <b>guest</b>, without creating an account; in that mode we do not collect or store your personal data. To create suggestions, the app sends location coordinates directly from your device to the open data services listed below, which process the request together with your IP address and browser information under their own policies. <b>Optionally</b>, you can create an account and submit completed activities for approval with a proof photo; in that case your account and activity data are stored on Google's Firebase infrastructure — see "Account system, photo approval and Firebase" below.</p>
 
     <h2>Location</h2>
     <p>If you grant location permission, your device location is read only while the app is open and when you start a search. If you do not, you can pick a location on the map or by typing an address. The last location you chose is stored only on your device for the next launch.</p>
@@ -45,11 +45,20 @@
       <tr><td>Google Fonts</td><td>Standard font request</td><td>Fonts and icons</td></tr>
       <tr><td>jakutp.github.io (GitHub Pages)</td><td>Configuration file request</td><td>Remotely switching off a service if needed</td></tr>
       <tr><td>Google Gemini (only if you enter your own API key)</td><td>Your intent text, place name, coordinates, list of nearby places</td><td>Optional AI description</td></tr>
+      <tr><td>Google Firebase (gstatic.com — SDK files)</td><td>None (static file download)</td><td>Account system library; these files are downloaded every time the app starts, whether or not you create an account, but no identity/data is sent to Firebase unless you do</td></tr>
+      <tr><td>Google Firebase Authentication (only if you create an account / sign in)</td><td>Your e-mail address, your password (your password goes directly to Google, not to us — we never see it)</td><td>Account creation and sign-in</td></tr>
+      <tr><td>Google Cloud Firestore (only while signed in)</td><td>Your account ID, your e-mail; if you submit a completion: place info, your GPS location, completion time, photo link</td><td>Storing your profile and activity-approval records, syncing approval status</td></tr>
+      <tr><td>Google Cloud Storage (only if you submit an activity with a photo)</td><td>The proof photo you upload</td><td>Storing the photo for activity approval</td></tr>
     </table></div>
     <p>When you tap a link on a place card (website, Google Maps directions, Wikipedia), the page opens in the system browser and that site's policy applies from then on.</p>
 
+    <h2>Account system, photo approval and Firebase</h2>
+    <p>Creating an account is entirely optional; if you don't, the app keeps working exactly as it does without one. If you create an account (with e-mail and password), we keep your authentication and data on Google's Firebase infrastructure (Authentication, Firestore database, Storage file store — servers in Europe and the US); this means Google acts as a sub-processor. Your password never reaches us — it goes straight to Google's authentication system, which we cannot see.</p>
+    <p>When you mark an activity "completed" and upload a <b>proof photo</b>: the photo, that activity's place information, your GPS location at the moment of completion, and a timestamp are saved to Firebase and enter "pending approval" status. This record is reviewed — for now manually, and in the future optionally with an automated visual check — by the app's developer (the data controller), who approves or rejects it; if approved, you receive your discovery points. During this review the developer sees your photo, the place information and your location at that time. This data is kept until you delete your account or separately ask for it to be removed.</p>
+    <p>You can permanently delete your account at any time via <b>Settings → Account → delete my account</b>; this removes your profile, all activity-approval records and the photos you uploaded from Firebase (your local discovery points/history on-device are kept separately and can be cleared from Settings). See <a href="https://firebase.google.com/support/privacy">Firebase Privacy and Security</a> for Firebase's own sub-processors and data handling.</p>
+
     <h2>Stored on your device</h2>
-    <p>The app keeps the following in local storage (localStorage and IndexedDB): last location, theme and settings, a temporary cache of service responses (up to a few weeks), preference weights learned from the suggestions you accept or skip, your Gemini API key if you entered one, your discovery points/level, and your terms and consent records (including the device identifier). None of this is sent off your device. Deleting the app or clearing its data removes all of it.</p>
+    <p>The app keeps the following in local storage (localStorage and IndexedDB): last location, theme and settings, a temporary cache of service responses (up to a few weeks), preference weights learned from the suggestions you accept or skip, your Gemini API key if you entered one, your discovery points/level, your terms and consent records (including the device identifier), and, if you created an account, Firebase's own session information (so it can recognise you without signing in again). Other than your account/session info, none of this is sent off your device. Deleting the app or clearing its data removes all of it (if you have an account, your Firebase data must also be removed separately via "delete my account").</p>
 
     <h2>Optional permissions (explicit consent)</h2>
     <p>On first launch you are asked to answer "yes" or "no" separately for each purpose below. These permissions are optional; refusing them does not prevent you from using the app. Your data is not used for any purpose you do not agree to. You can change or withdraw your choice at any time in <b>Settings → İzinlerim ve sözleşmeler (My permissions and agreements)</b>; withdrawal takes effect for the future.</p>
@@ -68,7 +77,7 @@
     <p>Who consented to which purpose, when, and under which version of the texts (or withdrew consent) is kept on your device in an append-only log, with a random installation identifier and, on iOS, Apple's identifier for vendor (identifierForVendor; this is not the advertising identifier and is not used for tracking), the app version and language, and without your name or contact details. You can view and export this record in Settings. If an account or server is added in the future, the record may also be stored on the server under this identifier for evidence purposes; this will be stated in this policy in advance.</p>
 
     <h2>Legal bases</h2>
-    <p>Your location is processed to provide the suggestion service (performance of a contract, Turkish Personal Data Protection Law (KVKK) art. 5/2-c). Optional purposes are processed only with your explicit consent (KVKK art. 5/1). The app is currently not offered on the App Store in the European Union or mainland China.</p>
+    <p>Your location is processed to provide the suggestion service (performance of a contract, Turkish Personal Data Protection Law (KVKK) art. 5/2-c). Optional purposes are processed only with your explicit consent (KVKK art. 5/1). Creating an account and the activity-approval flow are likewise a contractual relationship you initiate yourself (KVKK art. 5/2-c): entering your e-mail/password and tapping "sign up", and uploading and submitting a photo, are explicit acts and consent. The app is currently not offered on the App Store in the European Union or mainland China.</p>
 
     <h2>Children</h2>
     <p>ZAR is not directed at children and does not knowingly collect personal data from anyone.</p>
