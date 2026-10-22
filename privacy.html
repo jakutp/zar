@@ -24,83 +24,87 @@
 <body>
   <main>
     <h1>ZAR Gizlilik Politikası</h1>
-    <p class="date">Son güncelleme: 17 Ekim 2026 • Sürüm 2026-10-17 • <a href="terms.html">Kullanım Koşulları</a> • <a href="en/privacy.html" hreflang="en">English</a></p>
+    <p class="date">Son güncelleme: 22 Ekim 2026 • Sürüm 2026-10-22 • <a href="terms.html">Kullanım Koşulları</a> • <a href="en/privacy.html" hreflang="en">English</a></p>
     <p>Veri sorumlusu: Kutay Türker (ZAR geliştiricisi). İletişim: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>.</p>
 
     <h2>Kısaca</h2>
-    <p>ZAR'ın kendi sunucusu, reklamı ve analiz/izleme aracı yoktur. Hesap açmadan, <b>misafir olarak</b> uygulamanın tüm önerme/keşif özelliklerini kullanabilirsin; bu modda kişisel verini biz toplamayız ve saklamayız. Konum koordinatlarını, öneri üretmek için aşağıda listelenen açık veri servislerine doğrudan cihazından göndeririz; bu servisler isteği, IP adresin ve tarayıcı bilgisiyle birlikte kendi politikalarına göre işler. <b>İsteğe bağlı olarak</b> bir hesap açıp tamamladığın etkinlikleri kanıt fotoğrafıyla onaya gönderebilirsin; bu durumda hesap ve etkinlik verilerin Google'ın Firebase altyapısında saklanır — ayrıntılar aşağıda "Hesap sistemi, fotoğraf onayı ve Firebase" bölümünde.</p>
+    <p>ZAR, ne yapacağına karar veremediğinde yakınındaki gerçek yerlerden altısını zarın yüzlerine koyar. Bunun için yazdığın istek ve konumun, Google'ın Firebase/Google Cloud altyapısında (Avrupa, europe-west1) çalışan <b>ZAR sunucusuna</b> gönderilir; sunucu yerleri Google Haritalar (Places) verisinden, gerektiğinde açık verilerden (Overture Maps, OpenStreetMap) bulur ve yapay zekâ (Google Gemini) ile seçer. Hesap açmadan arama yaparsan yalnızca isteğinin özeti gösterilir; sonuçlar, puan, mahalle sıralaması, etkinlikler ve işletme paneli için ücretsiz bir hesap gerekir. Arama metnini ve konumunu sunucu günlüklerine yazmayız, reklam için hiçbir zaman kullanmayız.</p>
 
     <h2>Konum</h2>
-    <p>Konum iznini verirsen cihazın konumu yalnızca uygulama açıkken ve sen zar kurduğunda okunur. İzin vermezsen haritadan ya da adres yazarak konum seçebilirsin. Son seçtiğin konum, bir sonraki açılışta kullanılmak üzere yalnızca cihazında saklanır.</p>
+    <p>Konum iznini verirsen konum yalnızca uygulama açıkken okunur: arama yaparken, bir göreve vardığını ya da etkinlik yerinde olduğunu doğrularken. İzin vermezsen haritadan ya da adres yazarak konum seçebilirsin. Arama yaptığında konumun sunucuya gönderilir; sunucu bunu yakındaki yerleri bulmak için kullanır ve saklamaz. Zarına konan altı yerin konumu, oraya gittiğini doğrulayabilmek için <b>24 saat</b> saklanır ve sonra silinir. Görevi tamamladığında o anki GPS konumun, yalnızca mekâna yakın olup olmadığını kontrol etmek için kullanılır.</p>
 
-    <h2>Cihazından giden istekler</h2>
+    <h2>Hangi veri, kime, neden</h2>
     <div class="wrap">
       <table>
-        <thead><tr><th>Servis</th><th>Gönderilen</th><th>Neden</th></tr></thead>
+        <thead><tr><th>Alıcı</th><th>Gönderilen</th><th>Neden</th></tr></thead>
         <tbody>
-          <tr><td>OpenStreetMap Overpass API (overpass-api.de ve aynaları: overpass.openstreetmap.fr, overpass.private.coffee, maps.mail.ru)</td><td>Konum koordinatları ve arama yarıçapı</td><td>Yakındaki mekanlar</td></tr>
-          <tr><td>OpenStreetMap Nominatim</td><td>Konum çevresindeki kutu, yazdığın adres ya da koordinat</td><td>Mekan ve adres arama</td></tr>
-          <tr><td>OpenStreetMap harita karoları</td><td>Görüntülenen harita bölgesi</td><td>Harita</td></tr>
-          <tr><td>Overture Maps (tiles.overturemaps.org, stac.overturemaps.org)</td><td>Konumun bulunduğu harita karosu</td><td>Yedek mekan verisi</td></tr>
-          <tr><td>Vikipedi ve Wikidata (Wikimedia)</td><td>Konum koordinatları, madde kimlikleri</td><td>Yakındaki ansiklopedik yerler</td></tr>
-          <tr><td>Open-Meteo</td><td>Konum koordinatları</td><td>Hava durumu ve yerel saat</td></tr>
-          <tr><td>Google Fonts</td><td>Standart yazı tipi isteği</td><td>Yazı tipleri ve simgeler</td></tr>
-          <tr><td>jakutp.github.io (GitHub Pages)</td><td>Yapılandırma dosyası isteği</td><td>Bir servisin gerektiğinde uzaktan kapatılabilmesi</td></tr>
-          <tr><td>Google Gemini (yalnızca kendi API anahtarını girersen)</td><td>Yazdığın niyet metni, konum adı ve koordinatları, yakındaki mekan listesi</td><td>İsteğe bağlı yapay zekâ betimlemesi</td></tr>
-          <tr><td>Google Firebase (gstatic.com — SDK dosyaları)</td><td>Yok (statik dosya indirme)</td><td>Hesap sistemi kütüphanesi; hesap açsan da açmasan da uygulama her başladığında bu dosyalar indirilir, ama hesap açmazsan Firebase'e kimlik/veri gönderilmez</td></tr>
-          <tr><td>Google Firebase Authentication (yalnızca hesap açarsan/giriş yaparsan)</td><td>E-posta adresin, parolan (parolan bize değil doğrudan Google'a gider, biz görmeyiz)</td><td>Hesap oluşturma ve oturum açma</td></tr>
-          <tr><td>Google Cloud Firestore (yalnızca hesaplıyken)</td><td>Hesap kimliğin, e-postan; etkinlik tamamlama kaydı gönderirsen: mekan bilgisi, GPS konumun, tamamlama zamanı, fotoğraf bağlantısı</td><td>Profilini ve etkinlik onay kayıtlarını saklamak, onay durumunu senkronlamak</td></tr>
-          <tr><td>Google Cloud Storage (yalnızca bir etkinliği fotoğrafla onaya gönderirsen)</td><td>Yüklediğin kanıt fotoğrafı</td><td>Etkinlik onayı için fotoğrafı saklamak</td></tr>
+          <tr><td>ZAR sunucusu (Google Cloud Functions, Avrupa)</td><td>Arama metnin, konumun, seçtiğin kategori/zaman, saat dilimin, kullanıcı kimliğin</td><td>Arama, puan, etkinlik ve hesap işlemleri</td></tr>
+          <tr><td>Google Maps Platform – Places API (sunucu üzerinden)</td><td>Konum çevresi ve kısa bir arama ifadesi (ör. "kafe"); kimliğin gönderilmez</td><td>Yakındaki yerler, puanları ve çalışma saatleri</td></tr>
+          <tr><td>Google Gemini – Vertex AI (sunucu üzerinden)</td><td>Arama metnin ve aday yer listesi; etkinlik başlığı/açıklaması; görev kanıt fotoğrafın ve beklenen mekân türü</td><td>İsteği anlamak ve seçmek; etkinlik metnini denetlemek; fotoğrafın görevle uyumunu kontrol etmek</td></tr>
+          <tr><td>Overture Maps, OpenStreetMap Overpass ve Nominatim (sunucu üzerinden)</td><td>Konum koordinatları</td><td>Yedek yer verisi; konumun hangi mahalleye düştüğünü bulmak</td></tr>
+          <tr><td>Google Firebase Authentication</td><td>E-posta ve parola (parola bize ulaşmaz) ya da hesapsız kullanımda anonim kimlik</td><td>Oturum açma, günlük arama hakkını saymak</td></tr>
+          <tr><td>Google Cloud Firestore</td><td>Profil (takma ad, hesap türü, ev mahallesi, isteğe bağlı Instagram adı), puan defteri, ziyaret ve katılım kayıtları, etkinlikler, şikayetler, işletme bilgileri, reklam ödül kayıtları, izin ve tamamlama kayıtları</td><td>Hizmeti sunmak ve kayıtlarının seninle kalması</td></tr>
+          <tr><td>Google Cloud Storage</td><td>Görev kanıt fotoğrafın (yüklemeden önce küçültülür, konum/cihaz bilgisi silinir)</td><td>Fotoğraflı görev doğrulaması</td></tr>
+          <tr><td>Google AdMob (yalnız reklam iznine "evet" dersen ve reklam izlersen)</td><td>IP adresi, cihaz bilgisi, reklam etkileşimi; iOS izleme izni verirsen reklam kimliği; ödülün doğrulanması için kullanıcı kimliğin</td><td>Ödüllü reklam ve ödülün sunucuda doğrulanması</td></tr>
+          <tr><td>OpenStreetMap harita karoları, Google Fonts, GitHub Pages (doğrudan cihazından)</td><td>Görüntülenen harita bölgesi, standart dosya istekleri</td><td>Harita, yazı tipleri, uzaktan yapılandırma</td></tr>
         </tbody>
       </table>
     </div>
-    <p>Mekan kartındaki bir bağlantıya (web sitesi, Google Haritalar yol tarifi, Vikipedi) dokunduğunda sayfa sistem tarayıcısında açılır; o andan sonra o sitenin politikası geçerlidir.</p>
+    <p>Google ve Google Cloud bu verileri ZAR adına, <a href="https://cloud.google.com/terms/data-processing-addendum">Cloud Veri İşleme Sözleşmesi</a> kapsamında işler. Vertex AI'ye gönderilen içerik Google'ın kendi modellerini eğitmek için kullanılmaz. Mekân kartındaki bir bağlantıya (Google Haritalar, web sitesi) dokunduğunda o sitenin politikası geçerlidir.</p>
 
-    <h2>Hesap sistemi, fotoğraf onayı ve Firebase</h2>
-    <p>Hesap açmak tamamen isteğe bağlıdır; açmazsan uygulama hiçbir şeyi değiştirmeden, hesapsız haliyle çalışmaya devam eder. Hesap açarsan (e-posta ve parola ile) kimlik doğrulamasını ve verilerini Google'ın Firebase altyapısı (Authentication, Firestore veritabanı, Storage dosya deposu — sunucuları Avrupa ve ABD'de) üzerinde tutarız; bu, Google'ın bir alt işleyici (veri işleyen) olarak kullanıldığı anlamına gelir. Parolan asla bize ulaşmaz, doğrudan Google'ın kimlik doğrulama sistemine gider ve biz onu göremeyiz.</p>
-    <p>Bir etkinliği "tamamladım" deyip <b>kanıt fotoğrafı</b> yüklediğinde: fotoğraf, o etkinliğin mekân bilgisi, tamamlama anındaki GPS konumun ve zaman damgası Firebase'e kaydedilir ve "onay bekliyor" durumuna girer. Bu kayıt, uygulama geliştiricisi (veri sorumlusu) tarafından —şu an için elle, ileride isteğe bağlı olarak otomatik bir görsel kontrolle— incelenip onaylanır ya da reddedilir; onaylanırsa keşif puanın verilir. Geliştirici bu inceleme sırasında fotoğrafını, mekân bilgini ve o anki konumunu görür. Bu veriler, hesabını silene ya da ayrıca silinmesini istemene kadar saklanır.</p>
-    <p>Hesabını <b>Ayarlar → Hesap → hesabımı sil</b> ile istediğin zaman kalıcı olarak silebilirsin; bu, profilini, tüm etkinlik onay kayıtlarını ve yüklediğin fotoğrafları Firebase'den siler (yerel cihazındaki keşif puanı/geçmiş ayrı tutulur, o da Ayarlar'dan temizlenebilir). Hesap ve etkinlik verilerin (onaylanan/reddedilen kayıtlar ve fotoğraflar) <b>hesabın açık kaldığı sürece</b> saklanır; çünkü puanlarının ve etkinlik geçmişinin seninle kalması bu hizmetin amacıdır. Hesabını sildiğinde ya da tek bir kaydın silinmesini istediğinde veriler canlı sistemden hemen, Google'ın yedeklerinden ise en geç 30 gün içinde kalıcı olarak silinir. Yasal bir saklama yükümlülüğü (ör. resmî bir makamın talebi) olması hâlinde ilgili veri yalnızca o yükümlülük süresince ve erişimi kısıtlanarak saklanır. Google Cloud/Firebase'i kullanman, Google'ın standart hizmet şartlarına dahil olan Veri İşleme Sözleşmesi'ni (Cloud Data Processing Addendum) otomatik olarak devreye sokar; ayrıca imzalanan bir belge gerekmez. Firebase'in kendi alt yüklenicileri ve veri işleme uygulamaları için <a href="https://firebase.google.com/support/privacy">Firebase Gizlilik ve Güvenlik</a> sayfasına bakabilirsin.</p>
+    <h2>Hesap, takma ad ve topluluk</h2>
+    <p>Hesap açarken <b>Kişisel</b> ya da <b>İşletme</b> türünü seçersin. Başkalarına yalnızca seçtiğin <b>takma ad</b>, seviyen, puanın, ev mahallen ve gittiğin yer/görev/check-in sayıların görünür (mahalle sıralaması ve mini profil). E-postan hiçbir zaman gösterilmez. Instagram kullanıcı adını eklersen, "profilimde göster" açık değilse kimse göremez. Açtığın <b>etkinlikler</b> (başlık, açıklama, yer, zaman, takma adın) herkese açıktır; katıldığın etkinliklerde takma adın yalnız etkinliği açan kişiye görünür. Etkinlik metinleri otomatik denetlenir (kelime süzgeci ve Gemini); şüpheli içerik yayından önce incelenir. Kullanıcıları engelleyebilir, etkinlikleri ve kullanıcıları şikayet edebilirsin; şikayetleri biz inceleriz.</p>
 
-    <h2>Cihazında saklananlar</h2>
-    <p>Uygulama, cihazının yerel depolamasında (localStorage ve IndexedDB) şunları tutar: son konum, tema ve ayarlar, servis yanıtlarının geçici önbelleği (en çok birkaç hafta), kabul/veto ettiğin öneri türlerinden öğrenilen tercih ağırlıkları girdiysen Gemini API anahtarın, keşif puanın/seviyen, sözleşme ile izin kayıtların (cihaz kimliği dahil) ve hesap açtıysan Firebase'in kendi oturum bilgisi (seni tekrar giriş yapmadan tanıması için). Bunlardan hesap/oturum bilgisi hariç hiçbiri cihazından dışarı gönderilmez. Uygulamayı silmek ya da uygulama verilerini temizlemek hepsini kaldırır (hesap açıksa Firebase'deki verin ayrıca "hesabımı sil" ile silinmelidir).</p>
+    <h2>Puan ve konum doğrulaması</h2>
+    <p>Puanı sunucu verir: zarına konan bir yere vardığında konumun mekâna yeterince yakınsa ya da etkinlik saatinde etkinlik yerindeysen. Fotoğraflı görevde fotoğrafın Gemini'ye gönderilir ve şu sorulur: gerçek bir fotoğraf mı, beklenen mekân türüne uyuyor mu, uygunsuz içerik var mı. Bu değerlendirme ve GPS mesafesi birlikte değerlendirilir: net uyumsa otomatik onaylanır, uygunsuzsa reddedilir, arada kalanları geliştirici inceler. Fotoğrafını yalnızca bu sistem ve geliştirici görür; başka kullanıcılar görmez. Yüzleri tanımlamaya çalışmayız.</p>
+
+    <h2>İşletme hesapları</h2>
+    <p>İşletme hesabıyla kaydettiğin işletme adı, kategori, adres, konum, telefon, web sitesi, iletişim e-postası ve vergi/unvan bilgisi doğrulama için geliştirici tarafından incelenir; onaylanan işletmenin adı, adresi ve konumu sponsorlu öneri ve etkinliklerde herkese görünür. İşletme panelindeki istatistikler (zarda gösterim, seçilme, doğrulanmış ziyaret, check-in) yalnızca sayıdır; işletmeye kullanıcıların kimliği ya da konumu verilmez.</p>
+
+    <h2>Reklamlar (Google AdMob)</h2>
+    <ul>
+      <li>Reklamlar yalnızca <b>ödüllü</b> ve isteğe bağlıdır: sen izlemeyi seçersen ek arama hakkı ya da haftalık puan kazanırsın. Reklam puanı hiçbir sıralamaya girmez.</li>
+      <li><b>Reklam iznine "evet" dersen:</b> reklam izlediğinde Google'a IP adresin (yaklaşık konum çıkarımı dahil), cihaz ve uygulama bilgileri, reklam etkileşimlerin ve —yalnızca iOS izleme izni (App Tracking Transparency) de verirsen— reklam kimliğin (IDFA) aktarılır. İzleme iznini vermezsen reklamlar kişiselleştirilmemiş gösterilir. Ödülün gerçekten izlendiğini doğrulamak için Google, ZAR sunucusuna bir işlem kimliği ve senin ZAR kullanıcı kimliğini gönderir.</li>
+      <li><b>"Hayır" dersen:</b> reklam altyapısı hiç başlatılmaz ve reklam amacıyla Google'a veri aktarılmaz.</li>
+      <li>GPS konumun, arama metnin, fotoğrafların ve etkinlik geçmişin reklam için <b>hiçbir zaman</b> paylaşılmaz.</li>
+      <li>Google bu verileri kendi politikasına göre ve yurt dışında işler: <a href="https://policies.google.com/technologies/partner-sites">Google'ın iş ortağı uygulamalarındaki veri kullanımı</a>. Aktarım açık rızana (KVKK m. 9) dayanır; iznini Ayarlar'dan geri çekebilirsin.</li>
+    </ul>
+    <p><b>Sponsorlu öneriler:</b> Bir işletme ücret karşılığında zarında en fazla bir yüzde görünebilir; bu yüz her zaman "Sponsorlu" diye etiketlenir ve zar yine eşit olasılıkla atılır.</p>
 
     <h2>İsteğe bağlı izinler (açık rıza)</h2>
-    <p>Uygulamaya ilk girişte, aşağıdaki amaçların her biri için ayrı ayrı "evet" ya da "hayır" seçmen istenir. Bu izinler isteğe bağlıdır; vermemen uygulamayı kullanmana engel değildir. İzin vermediğin bir amaç için verin kullanılmaz. Seçimini istediğin zaman <b>Ayarlar → İzinlerim ve sözleşmeler</b> bölümünden değiştirebilir ya da geri çekebilirsin; geri çekme ileriye dönük etkilidir.</p>
+    <p>İlk girişte üç amacın her biri için ayrı ayrı "evet" ya da "hayır" seçersin; vermemen uygulamayı kullanmana engel değildir. Seçimini <b>Ayarlar → İzinlerim ve sözleşmeler</b> bölümünden değiştirebilirsin.</p>
     <div class="wrap"><table>
-      <tr><th>Amaç</th><th>Kapsam</th><th>Bugünkü durum</th></tr>
-      <tr><td>Ürünü geliştirme ve öneri sistemini eğitme</td><td>Hangi önerileri kabul ettiğin, elediğin ve tamamladığın gibi kullanım bilgileri; adın, e-postan ya da hesap bilgisi olmadan. Öneri modelini ve uygulamayı iyileştirmek için kullanılabilir.</td><td>Bu bilgiler şu an yalnızca cihazında, öneri sıralamasını kişiselleştirmek için kullanılır; dışarı gönderilmez.</td></tr>
-      <tr><td>Kişiselleştirilmiş reklam ve sponsorlu öneriler</td><td>İleride reklam ya da sponsorlu mekân gösterilirse, ilgi alanlarına göre seçilmesi.</td><td>Uygulamada şu an reklam yoktur. Bir sonraki sürümde Google AdMob ile reklam eklenmesi planlanıyor; ayrıntılar aşağıda.</td></tr>
-      <tr><td>Kampanya, yenilik ve abonelik teklifleri</td><td>Yeni özellikler, kampanyalar ve ileride sunulabilecek ücretli abonelik hakkında uygulama içi bilgilendirme.</td><td>Şu an abonelik yoktur.</td></tr>
+      <tr><th>Amaç</th><th>Kapsam</th></tr>
+      <tr><td>Ürünü geliştirme ve öneri sistemini eğitme</td><td>Hangi önerileri kabul ettiğin, elediğin ve tamamladığın gibi kullanım bilgileri. Şu an yalnızca cihazında, önerileri kişiselleştirmek için kullanılır ve sunucuya ayrıca gönderilmez.</td></tr>
+      <tr><td>Kişiselleştirilmiş reklam ve sponsorlu öneriler</td><td>Yukarıdaki "Reklamlar" bölümü.</td></tr>
+      <tr><td>Kampanya, yenilik ve abonelik teklifleri</td><td>Yeni özellikler ve kampanyalar hakkında uygulama içi bilgilendirme. Şu an abonelik yoktur.</td></tr>
     </table></div>
-    <p>Bu amaçlardan biri için verinin cihazından dışarı gönderilmesi ya da bir reklam veya analiz hizmet sağlayıcısıyla paylaşılması gündeme gelirse: (1) bu politika, hangi verinin kime ve neden aktarıldığını gösterecek şekilde önceden güncellenir, (2) App Store'daki gizlilik etiketi güncellenir, (3) cihazlar arası izleme söz konusuysa iOS'un izleme izni (App Tracking Transparency) ayrıca istenir ve (4) yalnızca o amaca "evet" demiş kullanıcılar için uygulanır. Metin değiştiğinde uygulama açılışında seçimin yeniden istenir.</p>
 
-    <h2>Reklamlar (planlanan: Google AdMob)</h2>
-    <p><b>Bu sürümde reklam yoktur ve reklam altyapısı uygulamada bulunmaz.</b> Sonraki bir sürümde, uygulamanın ücretsiz kalabilmesi için Google'ın reklam hizmeti <b>Google AdMob</b> (Google Ireland Ltd. / Google LLC) eklenmesi planlanıyor. O sürüm yayımlanmadan önce bu bölüm kesinleştirilir, App Store gizlilik etiketi güncellenir ve uygulama açılışında seçimlerin yeniden sorulur. Planlanan işleyiş:</p>
+    <h2>Saklama süreleri</h2>
     <ul>
-      <li><b>Reklam iznine "evet" dersen:</b> reklam gösterilirken Google'a IP adresin (yaklaşık konum çıkarımı dahil), cihaz ve uygulama bilgileri (model, işletim sistemi, dil), reklam etkileşimlerin (gösterim, tıklama) ve —yalnızca iOS izleme izni (App Tracking Transparency) de verirsen— cihazın reklam kimliği (IDFA) aktarılır. İzleme iznini vermezsen reklamlar reklam kimliği kullanılmadan, kişiselleştirilmemiş olarak gösterilir.</li>
-      <li><b>Reklam iznine "hayır" dersen:</b> reklam altyapısı hiç başlatılmaz ve reklam amacıyla Google'a veri aktarılmaz.</li>
-      <li>GPS konumun, hesap bilgilerin, fotoğrafların ve etkinlik geçmişin reklam için <b>hiçbir zaman</b> paylaşılmaz.</li>
-      <li>13–18 yaş arası kullanıcılar ve yaşını belirtmeyenler için yalnızca kişiselleştirilmemiş reklam istenir.</li>
-      <li>Google bu verileri kendi politikasına göre ve yurt dışında (AB ve ABD) işler: <a href="https://policies.google.com/technologies/partner-sites">Google'ın iş ortağı uygulamalarındaki veri kullanımı</a>. Yurt dışına aktarım, verdiğin açık rızaya (KVKK m. 9) dayanır; iznini Ayarlar'dan istediğin zaman geri çekebilirsin.</li>
+      <li>Hesap, profil, puan defteri, ziyaret/katılım kayıtları, fotoğraflar ve işletme bilgileri: <b>hesabın açık kaldığı sürece</b>.</li>
+      <li>Zarına konan yerlerin konumu: 24 saat. Görev kayıtlarındaki Google Haritalar konumu: en çok 25 gün (Google Haritalar şartları gereği; mekânın adı hiç saklanmaz).</li>
+      <li>Hesapsız (anonim) oturumlar: oluşturulduktan 30 gün sonra otomatik silinir.</li>
+      <li>Sunucu günlükleri: arama metni ve konum içermez; Google Cloud'un varsayılan süresince (30 gün) tutulur.</li>
     </ul>
 
-    <h2>Açık rıza beyanı</h2>
-    <p>Uygulamaya ilk girişte şu beyan onaylanır: <i>"Kullanım Koşulları'nı ve Gizlilik Politikası'nı okudum, anladım ve kabul ediyorum. 'Evet' dediğim amaçlar için kişisel verilerimin işlenmesine açık rızam vardır."</i> Koşulların kabulü zorunludur; isteğe bağlı amaçlara verilen rıza her amaç için ayrı ayrı ve özgürce verilir.</p>
+    <h2>Hesabını silmek</h2>
+    <p><b>Ayarlar → Hesap → hesabımı sil</b> ile hesabını kalıcı olarak silebilirsin. Bu; profilini, takma adını, puan defterini, mahalle ve ziyaret kayıtlarını, katılımlarını, şikayetlerini, reklam ödül kayıtlarını, görev kayıtlarını ve fotoğraflarını siler; açtığın etkinlikler yayından kaldırılır, işletmelerinin seninle bağı koparılır. Veriler canlı sistemden hemen, Google'ın yedeklerinden en geç 30 gün içinde silinir.</p>
 
-    <h2>İzin kaydı</h2>
-    <p>Kimin, hangi amaca, ne zaman ve metnin hangi sürümüyle izin verdiği ya da izni geri çektiği; adın veya iletişim bilgin olmadan, cihaza özgü rastgele bir kurulum kimliği ve iOS'ta Apple'ın tedarikçi cihaz kimliği (identifierForVendor; reklam kimliği değildir, izleme için kullanılmaz) ile birlikte cihazında değiştirilemez bir günlükte tutulur. Günlükte ayrıca uygulama sürümü ve dil yer alır. Bu kaydı Ayarlar → İzinlerim ve sözleşmeler bölümünden görebilir ve dışa aktarabilirsin. İleride hesap ya da sunucu eklenirse kayıt, kanıt amacıyla bu kimlikle sunucuda da saklanabilir; bu durum bu politikada önceden belirtilir.</p>
+    <h2>Cihazında saklananlar</h2>
+    <p>Son konum, tema ve ayarlar, servis yanıtlarının geçici önbelleği, öneri tercih ağırlıkların, cihazdaki keşif geçmişin ve sözleşme/izin kayıtların (kurulum kimliği ve iOS tedarikçi kimliği dahil) cihazının yerel depolamasında tutulur. Uygulamayı silmek bunları kaldırır.</p>
 
     <h2>Hukuki sebepler</h2>
-    <p>Konumun, öneri üretme hizmetini sunmak için (KVKK md. 5/2-c: sözleşmenin ifası) işlenir. İsteğe bağlı amaçlar yalnızca açık rızan ile (KVKK md. 5/1) işlenir. Hesap açman ve etkinlik onay akışı da tamamen senin isteğinle başlattığın bir sözleşme ilişkisidir (KVKK md. 5/2-c); e-posta/parolanı girip "kayıt ol"a basman ve fotoğraf yükleyip göndermen açık bir eylem ve rızadır. Avrupa Birliği ve Çin anakarası App Store'larında uygulama şu an sunulmamaktadır.</p>
+    <p>Arama, puan, etkinlik ve hesap işlemleri için verilerin, istediğin hizmeti sunmak üzere (KVKK md. 5/2-c, sözleşmenin ifası); güvenlik, kötüye kullanımı önleme ve içerik denetimi için meşru menfaat (md. 5/2-f); reklam ve diğer isteğe bağlı amaçlar için açık rızan (md. 5/1 ve md. 9) ile işlenir. Uygulama Avrupa Birliği ve Çin anakarası App Store'larında sunulmamaktadır.</p>
 
     <h2>Çocuklar</h2>
-    <p>ZAR çocuklara yönelik değildir ve bilerek kimseden kişisel veri toplamaz. Hesap açarken 13 yaşından büyük olduğunu beyan edersin; 13-17 yaş arasındaysan veli/vasi onayı gerekir (bkz. Kullanım Koşulları). 13 yaşından küçük biri hesap açtıysa, öğrendiğimizde hesabı ve ilişkili verileri sileriz; bunu fark edersen <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a> üzerinden bildir.</p>
+    <p>ZAR çocuklara yönelik değildir. Hesap açarken 13 yaşından büyük olduğunu beyan edersin; 13-17 yaş arasındaysan veli/vasi onayı gerekir. 13 yaşından küçük birinin hesabını öğrendiğimizde sileriz.</p>
 
     <h2>Haklarınız ve iletişim</h2>
-    <p>KVKK md. 11 kapsamında verinin işlenip işlenmediğini öğrenme, düzeltme, silme, itiraz ve izinlerini geri çekme haklarına sahipsin. Verilerin cihazında tutulduğundan uygulama verilerini silmek tüm kayıtları kaldırır; izin kaydını uygulama içinden dışa aktarabilirsin. Sorular ve istekler için: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. Üçüncü taraf servislerdeki veriler için ilgili servisin politikasına başvurabilirsin: <a href="https://osmfoundation.org/wiki/Privacy_Policy">OSMF</a>, <a href="https://foundation.wikimedia.org/wiki/Policy:Privacy_policy">Wikimedia</a>, <a href="https://open-meteo.com/en/terms">Open-Meteo</a>, <a href="https://policies.google.com/privacy">Google</a>.</p>
+    <p>KVKK md. 11 kapsamında verinin işlenip işlenmediğini öğrenme, düzeltme, silme, itiraz ve izinlerini geri çekme haklarına sahipsin. İstekler için: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. İlgili politikalar: <a href="https://policies.google.com/privacy">Google</a>, <a href="https://firebase.google.com/support/privacy">Firebase</a>, <a href="https://osmfoundation.org/wiki/Privacy_Policy">OSMF</a>.</p>
 
     <h2>Değişiklikler</h2>
-    <p>Bu politika değişirse bu sayfa, üstteki tarih ve sürüm güncellenir. İsteğe bağlı izinleri etkileyen bir değişiklikte uygulama açılışında onayın yeniden istenir; yeni bir amaç için önceden verdiğin izin geçerli sayılmaz.</p>
+    <p>Bu politika değişirse sayfa, tarih ve sürüm güncellenir; önemli değişikliklerde uygulama açılışında onayın yeniden istenir.</p>
   </main>
 </body>
 </html>

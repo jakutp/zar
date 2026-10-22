@@ -24,79 +24,85 @@
 <body>
   <main>
     <h1>ZAR Privacy Policy</h1>
-    <p class="date">Last updated: 17 October 2026 • Version 2026-10-17 • <a href="terms.html">Terms of Use</a> • <a href="../privacy.html" hreflang="tr">Türkçe</a></p>
-    <p>Data controller: Kutay Türker (developer of ZAR). Contact: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. This policy is published in Turkish and English; if they conflict, the Turkish text prevails.</p>
+    <p class="date">Last updated: 22 October 2026 • Version 2026-10-22 • <a href="terms.html">Terms of Use</a> • <a href="../privacy.html" hreflang="tr">Türkçe</a></p>
+    <p>Data controller: Kutay Türker (ZAR developer). Contact: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. If the Turkish and English texts conflict, the Turkish text prevails.</p>
 
     <h2>In short</h2>
-    <p>ZAR has no server of its own, no ads and no analytics or tracking tools. You can use every suggestion/discovery feature of the app as a <b>guest</b>, without creating an account; in that mode we do not collect or store your personal data. To create suggestions, the app sends location coordinates directly from your device to the open data services listed below, which process the request together with your IP address and browser information under their own policies. <b>Optionally</b>, you can create an account and submit completed activities for approval with a proof photo; in that case your account and activity data are stored on Google's Firebase infrastructure — see "Account system, photo approval and Firebase" below.</p>
+    <p>When you can't decide what to do, ZAR puts six real places near you on the faces of a die. Your request and location are sent to the <b>ZAR server</b>, which runs on Google's Firebase/Google Cloud infrastructure in Europe (europe-west1); it finds places from Google Maps (Places) data, falling back to open data (Overture Maps, OpenStreetMap), and picks them with AI (Google Gemini). Without an account you only see a summary of your request; results, points, neighbourhood rankings, events and the business panel need a free account. We do not write your search text or location to server logs and never use them for advertising.</p>
 
     <h2>Location</h2>
-    <p>If you grant location permission, your device location is read only while the app is open and when you start a search. If you do not, you can pick a location on the map or by typing an address. The last location you chose is stored only on your device for the next launch.</p>
+    <p>If you grant location permission, your location is read only while the app is open: when you search, or when you confirm that you reached a place or an event. Otherwise you can pick a location on the map or by address. Your location is sent to the server to find nearby places and is not stored. The location of the six places on your die is kept for <b>24 hours</b> so we can verify a visit, then deleted. When you complete a task, your GPS position is used only to check whether you are near the place.</p>
 
-    <h2>Requests sent from your device</h2>
+    <h2>What data goes where, and why</h2>
     <div class="wrap"><table>
-      <tr><th>Service</th><th>What is sent</th><th>Why</th></tr>
-      <tr><td>OpenStreetMap Overpass API (overpass-api.de and mirrors)</td><td>Coordinates and search radius</td><td>Nearby places</td></tr>
-      <tr><td>OpenStreetMap Nominatim</td><td>Area around the location, an address you type, or coordinates</td><td>Place and address search</td></tr>
-      <tr><td>OpenStreetMap map tiles</td><td>The map area being shown</td><td>Map</td></tr>
-      <tr><td>Overture Maps (tiles.overturemaps.org, stac.overturemaps.org)</td><td>The map tile containing the location</td><td>Backup place data</td></tr>
-      <tr><td>Wikipedia and Wikidata (Wikimedia)</td><td>Coordinates, item identifiers</td><td>Nearby encyclopedic places</td></tr>
-      <tr><td>Open-Meteo</td><td>Coordinates</td><td>Weather, forecast and local time</td></tr>
-      <tr><td>Google Fonts</td><td>Standard font request</td><td>Fonts and icons</td></tr>
-      <tr><td>jakutp.github.io (GitHub Pages)</td><td>Configuration file request</td><td>Remotely switching off a service if needed</td></tr>
-      <tr><td>Google Gemini (only if you enter your own API key)</td><td>Your intent text, place name, coordinates, list of nearby places</td><td>Optional AI description</td></tr>
-      <tr><td>Google Firebase (gstatic.com — SDK files)</td><td>None (static file download)</td><td>Account system library; these files are downloaded every time the app starts, whether or not you create an account, but no identity/data is sent to Firebase unless you do</td></tr>
-      <tr><td>Google Firebase Authentication (only if you create an account / sign in)</td><td>Your e-mail address, your password (your password goes directly to Google, not to us — we never see it)</td><td>Account creation and sign-in</td></tr>
-      <tr><td>Google Cloud Firestore (only while signed in)</td><td>Your account ID, your e-mail; if you submit a completion: place info, your GPS location, completion time, photo link</td><td>Storing your profile and activity-approval records, syncing approval status</td></tr>
-      <tr><td>Google Cloud Storage (only if you submit an activity with a photo)</td><td>The proof photo you upload</td><td>Storing the photo for activity approval</td></tr>
+      <thead><tr><th>Recipient</th><th>Data</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>ZAR server (Google Cloud Functions, Europe)</td><td>Search text, location, chosen category/time, time zone, user ID</td><td>Search, points, events and account features</td></tr>
+        <tr><td>Google Maps Platform – Places API (via server)</td><td>Area around the location and a short search phrase (e.g. "cafe"); not your identity</td><td>Nearby places, ratings and opening hours</td></tr>
+        <tr><td>Google Gemini – Vertex AI (via server)</td><td>Search text and candidate places; event titles/descriptions; your task proof photo and the expected place type</td><td>Understanding and choosing; moderating events; checking that a photo matches the task</td></tr>
+        <tr><td>Overture Maps, OpenStreetMap Overpass and Nominatim (via server)</td><td>Coordinates</td><td>Fallback place data; finding your neighbourhood</td></tr>
+        <tr><td>Google Firebase Authentication</td><td>Email and password (we never see the password), or an anonymous ID without an account</td><td>Sign-in, counting daily searches</td></tr>
+        <tr><td>Google Cloud Firestore</td><td>Profile (nickname, account type, home neighbourhood, optional Instagram handle), points ledger, visits and attendance, events, reports, business details, ad reward records, consent and completion records</td><td>Providing the service and keeping your records</td></tr>
+        <tr><td>Google Cloud Storage</td><td>Task proof photo (downscaled before upload; location/device metadata removed)</td><td>Photo task verification</td></tr>
+        <tr><td>Google AdMob (only if you said "yes" to ads and watch one)</td><td>IP address, device info, ad interactions; advertising ID if you allow iOS tracking; your user ID to verify the reward</td><td>Rewarded ads and server-side reward verification</td></tr>
+        <tr><td>OpenStreetMap tiles, Google Fonts, GitHub Pages (directly from your device)</td><td>Map area shown, standard file requests</td><td>Map, fonts, remote configuration</td></tr>
+      </tbody>
     </table></div>
-    <p>When you tap a link on a place card (website, Google Maps directions, Wikipedia), the page opens in the system browser and that site's policy applies from then on.</p>
+    <p>Google and Google Cloud process this data on ZAR's behalf under the <a href="https://cloud.google.com/terms/data-processing-addendum">Cloud Data Processing Addendum</a>. Content sent to Vertex AI is not used to train Google's models.</p>
 
-    <h2>Account system, photo approval and Firebase</h2>
-    <p>Creating an account is entirely optional; if you don't, the app keeps working exactly as it does without one. If you create an account (with e-mail and password), we keep your authentication and data on Google's Firebase infrastructure (Authentication, Firestore database, Storage file store — servers in Europe and the US); this means Google acts as a sub-processor. Your password never reaches us — it goes straight to Google's authentication system, which we cannot see.</p>
-    <p>When you mark an activity "completed" and upload a <b>proof photo</b>: the photo, that activity's place information, your GPS location at the moment of completion, and a timestamp are saved to Firebase and enter "pending approval" status. This record is reviewed — for now manually, and in the future optionally with an automated visual check — by the app's developer (the data controller), who approves or rejects it; if approved, you receive your discovery points. During this review the developer sees your photo, the place information and your location at that time. This data is kept until you delete your account or separately ask for it to be removed.</p>
-    <p>You can permanently delete your account at any time via <b>Settings → Account → delete my account</b>; this removes your profile, all activity-approval records and the photos you uploaded from Firebase (your local discovery points/history on-device are kept separately and can be cleared from Settings). Account and activity data (approved/rejected records and photos) are kept <b>for as long as your account remains open</b>, because keeping your points and activity history with you is the purpose of this service. When you delete your account, or ask us to delete a single record, the data is removed from the live system immediately and permanently deleted from Google's backups within 30 days at most. Where a legal retention obligation applies (e.g. a request from a public authority), the relevant data is kept only for that period and with restricted access. Using Google Cloud/Firebase automatically brings you under Google's Cloud Data Processing Addendum, included in their standard terms of service; no separately signed document is required. See <a href="https://firebase.google.com/support/privacy">Firebase Privacy and Security</a> for Firebase's own sub-processors and data handling.</p>
+    <h2>Account, nickname and community</h2>
+    <p>When signing up you choose a <b>Personal</b> or <b>Business</b> account. Others see only your chosen <b>nickname</b>, level, points, home neighbourhood and visit/task/check-in counts (neighbourhood ranking and mini profile). Your email is never shown. Your Instagram handle is visible only if you turn on "show on my profile". <b>Events</b> you create (title, description, place, time, nickname) are public; your nickname on events you join is visible only to the organiser. Event texts are moderated automatically (word filter and Gemini); suspicious content is reviewed before publishing. You can block users and report events and users; we review reports.</p>
 
-    <h2>Stored on your device</h2>
-    <p>The app keeps the following in local storage (localStorage and IndexedDB): last location, theme and settings, a temporary cache of service responses (up to a few weeks), preference weights learned from the suggestions you accept or skip, your Gemini API key if you entered one, your discovery points/level, your terms and consent records (including the device identifier), and, if you created an account, Firebase's own session information (so it can recognise you without signing in again). Other than your account/session info, none of this is sent off your device. Deleting the app or clearing its data removes all of it (if you have an account, your Firebase data must also be removed separately via "delete my account").</p>
+    <h2>Points and location checks</h2>
+    <p>Points are awarded by the server when your location is close enough to a place from your die, or when you are at an event during its time. For photo tasks your photo is sent to Gemini, which assesses whether it is a real photo, matches the expected place type and contains inappropriate content; combined with GPS distance, a clear match is approved automatically, inappropriate content is rejected and borderline cases are reviewed by the developer. Only this system and the developer see your photo. We do not try to identify faces.</p>
 
-    <h2>Optional permissions (explicit consent)</h2>
-    <p>On first launch you are asked to answer "yes" or "no" separately for each purpose below. These permissions are optional; refusing them does not prevent you from using the app. Your data is not used for any purpose you do not agree to. You can change or withdraw your choice at any time in <b>Settings → İzinlerim ve sözleşmeler (My permissions and agreements)</b>; withdrawal takes effect for the future.</p>
-    <div class="wrap"><table>
-      <tr><th>Purpose</th><th>Scope</th><th>Status today</th></tr>
-      <tr><td>Improving the product and training the recommendation system</td><td>Usage information such as which suggestions you accept, skip and complete, without your name, e-mail or account details; may be used to improve the recommendation model and the app.</td><td>This information is currently used only on your device to personalise suggestion ranking; it is not sent anywhere.</td></tr>
-      <tr><td>Personalised ads and sponsored suggestions</td><td>If ads or sponsored places are shown in the future, choosing them based on your interests.</td><td>There are no ads in the app today. Ads via Google AdMob are planned for the next version; see below.</td></tr>
-      <tr><td>Promotions, news and subscription offers</td><td>In-app information about new features, promotions and paid subscriptions that may be offered in the future.</td><td>There is no subscription today.</td></tr>
-    </table></div>
-    <p>If data ever needs to leave your device for one of these purposes, or be shared with an advertising or analytics provider: (1) this policy will first be updated to show which data goes to whom and why, (2) the App Store privacy label will be updated, (3) where cross-app tracking is involved, iOS tracking permission (App Tracking Transparency) will be requested separately, and (4) it will apply only to users who answered "yes" to that purpose. When the texts change, the app asks for your choices again at launch.</p>
+    <h2>Business accounts</h2>
+    <p>Business name, category, address, location, phone, website, contact email and tax/legal name are reviewed by the developer for verification; the name, address and location of an approved business are public in sponsored suggestions and events. Business panel statistics (impressions, picks, verified visits, check-ins) are counts only; businesses never receive users' identities or locations.</p>
 
-    <h2>Advertising (planned: Google AdMob)</h2>
-    <p><b>This version shows no ads and contains no advertising SDK.</b> A future version is planned to add Google's ad service <b>Google AdMob</b> (Google Ireland Ltd. / Google LLC) to keep the app free. Before that version ships, this section will be finalised, the App Store privacy label updated, and your choices asked again at launch. Planned behaviour:</p>
+    <h2>Ads (Google AdMob)</h2>
     <ul>
-      <li><b>If you answer "yes" to ads:</b> when ads are shown, Google receives your IP address (including approximate location derived from it), device and app information (model, OS, language), ad interactions (impressions, clicks) and — only if you also allow iOS tracking (App Tracking Transparency) — your device's advertising identifier (IDFA). Without tracking permission, ads are shown non-personalised, without the advertising identifier.</li>
-      <li><b>If you answer "no" to ads:</b> the advertising SDK is not started at all and no data is sent to Google for advertising.</li>
-      <li>Your GPS location, account details, photos and activity history are <b>never</b> shared for advertising.</li>
-      <li>For users aged 13–18 and those who have not stated their age, only non-personalised ads are requested.</li>
-      <li>Google processes this data under its own policy and outside Türkiye (EU and US): <a href="https://policies.google.com/technologies/partner-sites">How Google uses information from partner apps</a>. The transfer abroad relies on your explicit consent (KVKK Art. 9); you can withdraw it at any time in Settings.</li>
+      <li>Ads are <b>rewarded</b> and optional: if you choose to watch, you earn an extra search or weekly points. Ad points never count towards any ranking.</li>
+      <li><b>If you say "yes" to ads:</b> when you watch an ad, your IP address (including approximate location), device and app information, ad interactions and —only if you also allow iOS tracking (App Tracking Transparency)— your advertising ID (IDFA) are transferred to Google. Without tracking permission ads are non-personalised. To confirm a reward, Google sends the ZAR server a transaction ID and your ZAR user ID.</li>
+      <li><b>If you say "no":</b> the ad SDK is never started and no data is sent to Google for ads.</li>
+      <li>Your GPS location, search text, photos and event history are <b>never</b> shared for advertising.</li>
+      <li>Google processes this data under its own policy and abroad: <a href="https://policies.google.com/technologies/partner-sites">How Google uses data from partner apps</a>. The transfer is based on your explicit consent (Turkish KVKK art. 9), which you can withdraw in Settings.</li>
+    </ul>
+    <p><b>Sponsored suggestions:</b> a business may pay to appear on at most one face of your die; that face is always labelled "Sponsored" and the die still rolls with equal odds.</p>
+
+    <h2>Optional consents</h2>
+    <p>On first launch you choose "yes" or "no" separately for three purposes; refusing does not block use of the app. Change them in <b>Settings → My consents and agreements</b>.</p>
+    <div class="wrap"><table>
+      <tr><th>Purpose</th><th>Scope</th></tr>
+      <tr><td>Improving the product and training the suggestion system</td><td>Usage such as which suggestions you accept, veto and complete. Currently used only on your device to personalise suggestions.</td></tr>
+      <tr><td>Personalised ads and sponsored suggestions</td><td>See "Ads" above.</td></tr>
+      <tr><td>Campaigns, news and subscription offers</td><td>In-app information about new features and campaigns. There is no subscription today.</td></tr>
+    </table></div>
+
+    <h2>Retention</h2>
+    <ul>
+      <li>Account, profile, points ledger, visit/attendance records, photos and business details: <b>as long as your account is open</b>.</li>
+      <li>Location of places on your die: 24 hours. Google Maps coordinates in task records: at most 25 days (per Google Maps terms; place names are never stored).</li>
+      <li>Anonymous sessions: automatically deleted 30 days after creation.</li>
+      <li>Server logs: contain no search text or location; kept for Google Cloud's default period (30 days).</li>
     </ul>
 
-    <h2>Statement of explicit consent</h2>
-    <p>On first launch the following statement is confirmed: <i>"I have read, understood and accept the Terms of Use and the Privacy Policy. I give my explicit consent to the processing of my personal data for the purposes I answer 'yes' to."</i> Accepting the terms is required; consent to optional purposes is given freely and separately for each purpose.</p>
+    <h2>Deleting your account</h2>
+    <p><b>Settings → Account → delete my account</b> permanently deletes your profile, nickname, points ledger, neighbourhood and visit records, attendance, reports, ad reward records, task records and photos; events you created are taken down and your businesses are unlinked from you. Data is removed from live systems immediately and from Google's backups within 30 days.</p>
 
-    <h2>Consent record</h2>
-    <p>Who consented to which purpose, when, and under which version of the texts (or withdrew consent) is kept on your device in an append-only log, with a random installation identifier and, on iOS, Apple's identifier for vendor (identifierForVendor; this is not the advertising identifier and is not used for tracking), the app version and language, and without your name or contact details. You can view and export this record in Settings. If an account or server is added in the future, the record may also be stored on the server under this identifier for evidence purposes; this will be stated in this policy in advance.</p>
+    <h2>Stored on your device</h2>
+    <p>Last location, theme and settings, temporary service caches, suggestion preferences, on-device history and consent records (including an installation ID and the iOS identifier for vendor) are kept in your device's local storage. Deleting the app removes them.</p>
 
     <h2>Legal bases</h2>
-    <p>Your location is processed to provide the suggestion service (performance of a contract, Turkish Personal Data Protection Law (KVKK) art. 5/2-c). Optional purposes are processed only with your explicit consent (KVKK art. 5/1). Creating an account and the activity-approval flow are likewise a contractual relationship you initiate yourself (KVKK art. 5/2-c): entering your e-mail/password and tapping "sign up", and uploading and submitting a photo, are explicit acts and consent. The app is currently not offered on the App Store in the European Union or mainland China.</p>
+    <p>Search, points, events and account features: performance of the service you request (KVKK art. 5/2-c); security, abuse prevention and moderation: legitimate interest (art. 5/2-f); ads and other optional purposes: your explicit consent (art. 5/1 and art. 9). The app is not offered in the European Union or mainland China App Stores.</p>
 
     <h2>Children</h2>
-    <p>ZAR is not directed at children and does not knowingly collect personal data from anyone. When creating an account you represent that you are over 13; if you are 13–17, parental/guardian consent is required (see Terms of Use). If we learn that someone under 13 has created an account, we delete the account and its associated data; please report this at <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a> if you notice it.</p>
+    <p>ZAR is not directed at children. To create an account you confirm you are over 13; if you are 13-17 a parent/guardian must consent. We delete accounts of children under 13 when we learn of them.</p>
 
     <h2>Your rights and contact</h2>
-    <p>Under KVKK art. 11 you have the right to learn whether your data is processed, and to request correction, deletion, objection and withdrawal of consent. Because your data is kept on your device, deleting the app data removes all records; you can export your consent record from within the app. Questions and requests: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. For data held by third-party services, see their policies: <a href="https://osmfoundation.org/wiki/Privacy_Policy">OSMF</a>, <a href="https://foundation.wikimedia.org/wiki/Policy:Privacy_policy">Wikimedia</a>, <a href="https://open-meteo.com/en/terms">Open-Meteo</a>, <a href="https://policies.google.com/privacy">Google</a>.</p>
+    <p>Under KVKK art. 11 you may learn whether your data is processed, request correction or deletion, object and withdraw consent. Requests: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. Related policies: <a href="https://policies.google.com/privacy">Google</a>, <a href="https://firebase.google.com/support/privacy">Firebase</a>, <a href="https://osmfoundation.org/wiki/Privacy_Policy">OSMF</a>.</p>
 
     <h2>Changes</h2>
-    <p>If this policy changes, this page, the date and the version above are updated. For changes affecting optional permissions, the app asks for your consent again at launch; consent given earlier does not count for a new purpose.</p>
+    <p>If this policy changes, this page, its date and version are updated; for material changes you will be asked to agree again when opening the app.</p>
   </main>
 </body>
 </html>

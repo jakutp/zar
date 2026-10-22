@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>ZAR İşletme Paneli</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    :root { --bg: #fafafa; --fg: #16181d; --muted: #4f5460; --line: #e3e5ea; --link: #2457c5; --card: #ffffff; --ok: #1a7f37; --bad: #c22525; --warn: #a15c00; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #121316; --fg: #e8e9ec; --muted: #a9adb7; --line: #2a2d33; --link: #8db0ff; --card: #1a1c20; --warn: #f0b354; } }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 820px; margin: 0 auto; padding: 28px 16px 64px; }
+    h1 { font-size: 1.4rem; margin: 0 0 4px; }
+    h2 { font-size: 1.05rem; margin: 0 0 10px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+    .muted { color: var(--muted); font-size: 0.85rem; }
+    label { display: block; font-size: 0.82rem; color: var(--muted); margin-top: 8px; }
+    input, select, textarea { width: 100%; padding: 9px 10px; margin-top: 3px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--fg); font: inherit; }
+    button { padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; font-size: 0.9rem; }
+    button.primary { background: var(--link); color: #fff; border-color: var(--link); }
+    button:disabled { opacity: .55; cursor: default; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+    @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+    .badge { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 0.75rem; border: 1px solid var(--line); }
+    .badge.verified, .badge.active, .badge.published { color: var(--ok); border-color: var(--ok); }
+    .badge.pending, .badge.pending_review { color: var(--warn); border-color: var(--warn); }
+    .badge.rejected, .badge.removed, .badge.cancelled { color: var(--bad); border-color: var(--bad); }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .stat { border: 1px solid var(--line); border-radius: 10px; padding: 10px; text-align: center; }
+    .stat b { display: block; font-size: 1.4rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--line); }
+    .map { height: 240px; border-radius: 10px; margin-top: 8px; border: 1px solid var(--line); }
+    .hidden { display: none !important; }
+    .msg { min-height: 1.2em; margin-top: 6px; font-size: 0.85rem; }
+    .msg.err { color: var(--bad); }
+    .msg.ok { color: var(--ok); }
+    ul.plain { list-style: none; padding: 0; margin: 0; }
+    ul.plain li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ZAR İşletme Paneli</h1>
+    <p class="muted">Mekânını ZAR'da kararsız kalanlara öner: etkinlik aç, haftalık bonus ya da etiketli "Sponsorlu" zar yüzü kampanyası başlat. Kayıtlar ekibimizin onayından geçer.</p>
+
+    <section id="loginCard" class="card">
+      <h2>Giriş</h2>
+      <label>E-posta<input id="email" type="email" autocomplete="username"></label>
+      <label>Parola<input id="password" type="password" autocomplete="current-password"></label>
+      <div class="row" style="margin-top:10px">
+        <button id="btnLogin" class="primary">Giriş yap</button>
+        <button id="btnSignup">Hesap oluştur</button>
+      </div>
+      <div id="loginMsg" class="msg"></div>
+      <p class="muted">ZAR uygulamasındaki hesabınla da giriş yapabilirsin. Hesabını uygulamanın ayarlarından silebilirsin.</p>
+    </section>
+
+    <div id="panel" class="hidden">
+      <div class="row" style="justify-content: space-between; margin-bottom: 12px;">
+        <span id="whoami" class="muted"></span>
+        <button id="btnLogout">Çıkış</button>
+      </div>
+
+      <section class="card">
+        <div class="row" style="justify-content: space-between;">
+          <h2 style="margin:0">İşletmelerim</h2>
+          <select id="bizSelect" style="width:auto; min-width: 200px"></select>
+        </div>
+        <div id="bizEmpty" class="muted hidden" style="margin-top:8px">Henüz kayıtlı işletmen yok. Aşağıdan ekle.</div>
+        <div id="bizStatus" class="muted" style="margin-top:8px"></div>
+      </section>
+
+      <section id="dashboard" class="hidden">
+        <div class="card">
+          <h2>Son 14 gün</h2>
+          <div class="stats">
+            <div class="stat"><b id="stShown">0</b><span class="muted">zarda gösterim</span></div>
+            <div class="stat"><b id="stVisits">0</b><span class="muted">doğrulanmış ziyaret</span></div>
+            <div class="stat"><b id="stCheckins">0</b><span class="muted">etkinlik check-in</span></div>
+          </div>
+          <table style="margin-top:12px"><thead><tr><th>gün</th><th>gösterim</th><th>ziyaret</th><th>check-in</th></tr></thead><tbody id="statRows"></tbody></table>
+        </div>
+
+        <div class="card">
+          <h2>Etkinlik aç</h2>
+          <form id="eventForm">
+            <div class="grid">
+              <label>Başlık<input name="title" required minlength="4" maxlength="80" placeholder="Latte art atölyesi"></label>
+              <label>Kategori<select name="cat" id="eventCat"></select></label>
+              <label>Başlangıç<input name="start" type="datetime-local" required></label>
+              <label>Süre (saat)<input name="hours" type="number" min="0.5" max="12" step="0.5" value="2"></label>
+              <label>Kapasite<input name="capacity" type="number" min="2" max="500" value="20"></label>
+              <label>Katılımcıya haftalık bonus (0–100)<input name="bonus" type="number" min="0" max="100" value="20"></label>
+            </div>
+            <label>Açıklama<textarea name="description" rows="3" maxlength="1000"></textarea></label>
+            <p class="muted">Etkinlik işletmenin kayıtlı adresinde açılır. Katılımcı etkinlik saatinde ve yerinde check-in yapınca bonusu alır. Metinler otomatik denetlenir.</p>
+            <button class="primary">Yayınla</button>
+            <div id="eventMsg" class="msg"></div>
+          </form>
+          <h2 style="margin-top:16px">Etkinliklerim</h2>
+          <ul id="eventList" class="plain"></ul>
+        </div>
+
+        <div class="card">
+          <h2>Kampanya</h2>
+          <form id="campForm">
+            <div class="grid">
+              <label>Tür<select name="type"><option value="sponsored_face">Sponsorlu zar yüzü</option><option value="weekly_bonus">Haftalık bonus</option></select></label>
+              <label>Başlık / teklif<input name="title" required minlength="4" maxlength="90" placeholder="Kahvene kurabiye bizden"></label>
+              <label>Başlangıç<input name="start" type="datetime-local" required></label>
+              <label>Bitiş<input name="end" type="datetime-local" required></label>
+              <label>Ziyaretçiye haftalık bonus (5–100)<input name="bonus" type="number" min="5" max="100" value="20"></label>
+              <label>Gösterim yarıçapı (km, en fazla 3)<input name="radius" type="number" min="0.3" max="3" step="0.1" value="1.5"></label>
+            </div>
+            <label>Açıklama<textarea name="description" rows="2" maxlength="400"></textarea></label>
+            <p class="muted">Sponsorlu yüz, yakındaki kullanıcıların zarında en fazla 1 yüz olarak ve açıkça "Sponsorlu" etiketiyle görünür. Zar yine adil atılır. Kampanya, onay ve ödeme sonrası ekibimiz tarafından aktive edilir.</p>
+            <button class="primary">Onaya gönder</button>
+            <div id="campMsg" class="msg"></div>
+          </form>
+          <h2 style="margin-top:16px">Kampanyalarım</h2>
+          <ul id="campList" class="plain"></ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Yeni işletme kaydı</h2>
+        <form id="bizForm">
+          <div class="grid">
+            <label>İşletme adı<input name="name" required maxlength="80"></label>
+            <label>Kategori<select name="category" id="bizCat"></select></label>
+            <label>Telefon<input name="phone" maxlength="30"></label>
+            <label>Web sitesi (https://)<input name="website" maxlength="200" placeholder="https://"></label>
+            <label>İletişim e-postası<input name="contactEmail" type="email" maxlength="120"></label>
+            <label>Vergi no / unvan (doğrulama için)<input name="taxNote" maxlength="120"></label>
+          </div>
+          <label>Açık adres<input name="address" required maxlength="160"></label>
+          <label>Konum: haritada işletmenin yerine dokun</label>
+          <div id="bizMap" class="map"></div>
+          <div class="row" style="margin-top:6px"><button type="button" id="btnMyLoc">Konumumu kullan</button><span id="pinInfo" class="muted">konum seçilmedi</span></div>
+          <div style="margin-top:10px"><button class="primary">Onaya gönder</button></div>
+          <div id="bizMsg" class="msg"></div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-functions-compat.js"></script>
+  <script>
+    // src/core/firebaseConfig.js ile aynı değerler
+    const FIREBASE_CONFIG = {
+      apiKey: 'AIzaSyDJveC_7K2uN-dVjeIcQEtNN-xOBjTzGIw', authDomain: 'zar-rng-adventure.firebaseapp.com', projectId: 'zar-rng-adventure',
+      storageBucket: 'zar-rng-adventure.firebasestorage.app', messagingSenderId: '390109061725', appId: '1:390109061725:web:15e748e287cf593626e3b4'
+    };
+    const CATS = { yemek: 'Yemek', kahve: 'Kahve & Tatlı', konaklama: 'Konaklama', gezi: 'Gezi & Kültür', doga: 'Doğa & Manzara', gece: 'Gece & Eğlence', oyun: 'Oyun & Aktivite' };
+    const STATUS = { pending: 'onay bekliyor', verified: 'doğrulandı', rejected: 'reddedildi', active: 'aktif', ended: 'bitti', published: 'yayında', pending_review: 'incelemede', cancelled: 'iptal', removed: 'kaldırıldı', closed: 'kapalı' };
+    const $ = (id) => document.getElementById(id);
+    const pad = (n) => String(n).padStart(2, '0');
+    const localInput = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    const fmt = (ms) => new Date(ms).toLocaleString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+    const setMsg = (el, text, kind) => { el.textContent = text || ''; el.className = 'msg' + (kind ? ' ' + kind : ''); };
+    const badge = (status) => { const s = document.createElement('span'); s.className = 'badge ' + status; s.textContent = STATUS[status] || status; return s; };
+
+    firebase.initializeApp(FIREBASE_CONFIG);
+    const auth = firebase.auth();
+    const zarApi = firebase.app().functions('europe-west1').httpsCallable('zarApi', { timeout: 25000 });
+    async function api(action, data = {}) {
+      try { return (await zarApi({ action, data })).data; }
+      catch (e) { throw new Error(e.code === 'functions/internal' ? 'Sunucuya şu an ulaşılamıyor.' : e.message); }
+    }
+
+    // Kategori seçicileri
+    [$('bizCat'), $('eventCat')].forEach((sel) => Object.entries(CATS).forEach(([id, label]) => sel.add(new Option(label, id))));
+    const start = new Date(Date.now() + 86400000); start.setMinutes(0, 0, 0);
+    document.querySelectorAll('input[name=start]').forEach((i) => { i.value = localInput(start); });
+    document.querySelector('#campForm input[name=end]').value = localInput(new Date(start.getTime() + 7 * 86400000));
+
+    // Giriş
+    $('btnLogin').addEventListener('click', async () => {
+      setMsg($('loginMsg'), 'Giriş yapılıyor…');
+      try { await auth.signInWithEmailAndPassword($('email').value.trim(), $('password').value); setMsg($('loginMsg'), ''); }
+      catch (e) { setMsg($('loginMsg'), 'Giriş olmadı: ' + e.message, 'err'); }
+    });
+    $('btnSignup').addEventListener('click', async () => {
+      setMsg($('loginMsg'), 'Hesap oluşturuluyor…');
+      try { await auth.createUserWithEmailAndPassword($('email').value.trim(), $('password').value); setMsg($('loginMsg'), ''); }
+      catch (e) { setMsg($('loginMsg'), 'Hesap oluşturulamadı: ' + e.message, 'err'); }
+    });
+    $('btnLogout').addEventListener('click', () => auth.signOut());
+
+    let businesses = [];
+    let current = null;
+    auth.onAuthStateChanged(async (user) => {
+      $('loginCard').classList.toggle('hidden', !!user);
+      $('panel').classList.toggle('hidden', !user);
+      if (!user) return;
+      $('whoami').textContent = user.email || user.uid;
+      setTimeout(() => map.invalidateSize(), 50);
+      await loadBusinesses();
+    });
+
+    async function loadBusinesses(selectId) {
+      try {
+        businesses = (await api('business.mine')).businesses.filter((b) => b.status !== 'closed');
+      } catch (e) { $('bizStatus').textContent = e.message; return; }
+      const sel = $('bizSelect');
+      sel.innerHTML = '';
+      businesses.forEach((b) => sel.add(new Option(`${b.name} (${STATUS[b.status] || b.status})`, b.id)));
+      $('bizEmpty').classList.toggle('hidden', businesses.length > 0);
+      sel.classList.toggle('hidden', !businesses.length);
+      if (selectId) sel.value = selectId;
+      await showBusiness(sel.value);
+    }
+    $('bizSelect').addEventListener('change', (e) => showBusiness(e.target.value));
+
+    async function showBusiness(id) {
+      current = businesses.find((b) => b.id === id) || null;
+      $('dashboard').classList.toggle('hidden', !current || current.status !== 'verified');
+      const st = $('bizStatus');
+      st.innerHTML = '';
+      if (!current) return;
+      st.append(badge(current.status), ` ${current.address}`);
+      if (current.status === 'pending') st.append(' — Ekibimiz bilgileri kontrol ediyor; onaylanınca etkinlik ve kampanya açabilirsin.');
+      if (current.status === 'rejected') st.append(' — ' + (current.reviewNote || 'Bilgiler doğrulanamadı.'));
+      if (current.status !== 'verified') return;
+      try { renderDashboard(await api('business.dashboard', { businessId: current.id })); }
+      catch (e) { st.append(' — ' + e.message); }
+    }
+
+    function renderDashboard(d) {
+      $('stShown').textContent = d.stats.totals.shown;
+      $('stVisits').textContent = d.stats.totals.visits;
+      $('stCheckins').textContent = d.stats.totals.checkins;
+      const rows = $('statRows');
+      rows.innerHTML = '';
+      d.stats.series.slice().reverse().forEach((r) => {
+        const tr = document.createElement('tr');
+        [r.day, r.shown || 0, r.visits || 0, r.checkins || 0].forEach((v) => { const td = document.createElement('td'); td.textContent = v; tr.appendChild(td); });
+        rows.appendChild(tr);
+      });
+      const list = (el, items, line) => {
+        el.innerHTML = '';
+        if (!items.length) { const li = document.createElement('li'); li.className = 'muted'; li.textContent = 'Henüz yok.'; el.appendChild(li); }
+        items.forEach((it) => { const li = document.createElement('li'); li.append(badge(it.status), ' ', line(it)); el.appendChild(li); });
+      };
+      list($('eventList'), d.events, (e) => `${e.title} — ${fmt(e.startAt)} — ${e.attendeeCount || 0}/${e.capacity} kişi${e.bonusPoints ? ` — +${e.bonusPoints} bonus` : ''}`);
+      list($('campList'), d.campaigns, (c) => `${c.type === 'sponsored_face' ? 'Sponsorlu yüz' : 'Haftalık bonus'}: ${c.title} — ${fmt(c.startAt)} → ${fmt(c.endAt)} — +${c.bonusPoints}`);
+    }
+
+    // Etkinlik
+    $('eventForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const btn = f.querySelector('button');
+      btn.disabled = true;
+      setMsg($('eventMsg'), 'Gönderiliyor…');
+      try {
+        const startAt = new Date(f.start.value).getTime();
+        const r = await api('event.create', {
+          businessId: current.id, title: f.title.value, description: f.description.value, cat: f.cat.value,
+          startAt, endAt: startAt + Number(f.hours.value || 1) * 3600000, capacity: Number(f.capacity.value), bonusPoints: Number(f.bonus.value),
+          place: { name: current.name, lat: current.lat, lon: current.lon, address: current.address }
+        });
+        setMsg($('eventMsg'), r.status === 'published' ? 'Etkinlik yayında.' : 'Etkinlik incelemeye alındı.', 'ok');
+        f.title.value = ''; f.description.value = '';
+        await showBusiness(current.id);
+      } catch (err) { setMsg($('eventMsg'), err.message, 'err'); }
+      btn.disabled = false;
+    });
+
+    // Kampanya
+    $('campForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const btn = f.querySelector('button');
+      btn.disabled = true;
+      setMsg($('campMsg'), 'Gönderiliyor…');
+      try {
+        await api('business.campaignCreate', {
+          businessId: current.id, type: f.type.value, title: f.title.value, description: f.description.value,
+          startAt: new Date(f.start.value).getTime(), endAt: new Date(f.end.value).getTime(),
+          bonusPoints: Number(f.bonus.value), radiusKm: Number(f.radius.value)
+        });
+        setMsg($('campMsg'), 'Kampanya onaya gönderildi. Ekibimiz ödeme ve aktivasyon için seninle iletişime geçecek.', 'ok');
+        await showBusiness(current.id);
+      } catch (err) { setMsg($('campMsg'), err.message, 'err'); }
+      btn.disabled = false;
+    });
+
+    // İşletme kaydı + harita
+    const map = L.map('bizMap').setView([41.015, 28.979], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap katkıcıları' }).addTo(map);
+    let pin = null;
+    const setPin = (lat, lon) => {
+      if (pin) pin.setLatLng([lat, lon]); else pin = L.marker([lat, lon]).addTo(map);
+      $('pinInfo').textContent = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+    };
+    map.on('click', (e) => setPin(e.latlng.lat, e.latlng.lng));
+    $('btnMyLoc').addEventListener('click', () => navigator.geolocation && navigator.geolocation.getCurrentPosition(
+      (p) => { setPin(p.coords.latitude, p.coords.longitude); map.setView([p.coords.latitude, p.coords.longitude], 17); },
+      () => setMsg($('bizMsg'), 'Konum alınamadı; haritada işaretle.', 'err'), { enableHighAccuracy: true, timeout: 8000 }));
+
+    $('bizForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = e.target;
+      if (!pin) return setMsg($('bizMsg'), 'Haritada işletmenin yerini işaretle.', 'err');
+      const btn = f.querySelector('button[type=submit], button:not([type])');
+      btn.disabled = true;
+      setMsg($('bizMsg'), 'Gönderiliyor…');
+      try {
+        const ll = pin.getLatLng();
+        const r = await api('business.register', {
+          name: f.name.value, category: f.category.value, address: f.address.value, lat: ll.lat, lon: ll.lng,
+          phone: f.phone.value, website: f.website.value, contactEmail: f.contactEmail.value, taxNote: f.taxNote.value
+        });
+        setMsg($('bizMsg'), 'Kayıt alındı; onaylanınca panelin açılacak.', 'ok');
+        f.reset();
+        await loadBusinesses(r.business.id);
+      } catch (err) { setMsg($('bizMsg'), err.message, 'err'); }
+      btn.disabled = false;
+    });
+  </script>
+</body>
+</html>

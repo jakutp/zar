@@ -41,14 +41,32 @@
         <span id="whoami" class="muted"></span>
         <button id="btnLogout">Çıkış</button>
       </div>
+      <h2 style="font-size:1.05rem">Foto onayları</h2>
       <div id="list"></div>
       <div id="emptyMsg" class="muted hidden">Bekleyen kayıt yok.</div>
+
+      <!-- Topluluk ve işletme kuyruğu (zarApi admin.queue / admin.review) -->
+      <div class="row" style="justify-content: space-between; align-items: center; margin-top: 24px;">
+        <h2 style="font-size:1.05rem; margin:0">İşletme, kampanya, etkinlik, şikayet</h2>
+        <button id="btnQueueRefresh">Yenile</button>
+      </div>
+      <div id="queueMsg" class="muted"></div>
+      <div id="queue"></div>
+
+      <div class="card" style="margin-top: 16px;">
+        <strong>Mahalle boost</strong>
+        <p class="muted">Seçilen mahallede belirli süre haftalık puan çarpanı (×1–×3). Mahalle anahtarı örn. <code>tr-istanbul-kadikoy-caferaga</code>.</p>
+        <input id="boostArea" placeholder="mahalle anahtarı">
+        <div class="row"><input id="boostMult" type="number" min="1" max="3" step="0.25" value="2" style="width:120px"><input id="boostHours" type="number" min="0.5" max="72" step="0.5" value="1" style="width:120px"><button id="btnBoost" class="primary">Boost aç</button></div>
+        <div id="boostMsg" class="muted"></div>
+      </div>
     </div>
   </main>
 
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-functions-compat.js"></script>
   <script>
     // GOREV_MEGA_PROMPT_HESAP_ONAY_SENARYO.md Faz 2: PLACEHOLDER'ları gerçek config ile değiştir
     // (src/core/firebaseConfig.js ile aynı değerler).
@@ -133,7 +151,10 @@
         empty.classList.toggle('hidden', items.length > 0);
         list.innerHTML = '';
         items.forEach((c) => {
-          const title = (c.optSnapshot && c.optSnapshot.title) || 'Etkinlik';
+          const o = c.optSnapshot || {};
+          // Google mekânının adı saklanmaz (Maps şartları): kategori + Haritalar bağlantısı gösterilir
+          const placeId = /^gp_/.test(o.osmId || '') ? o.osmId.slice(3) : null;
+          const title = o.title || (o.category ? o.category + (placeId ? ' (Google mekânı)' : '') : 'Etkinlik');
           const when = c.completedAt ? new Date(c.completedAt).toLocaleString('tr-TR') : '-';
 
           const card = document.createElement('div');
@@ -147,6 +168,14 @@
           whenSpan.className = 'muted';
           whenSpan.textContent = ' • ' + when;
           head.appendChild(whenSpan);
+          if (placeId) {
+            const a = document.createElement('a');
+            a.href = 'https://www.google.com/maps/place/?q=place_id:' + encodeURIComponent(placeId);
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.textContent = ' haritada aç ↗';
+            head.appendChild(a);
+          }
           card.appendChild(head);
 
           const who = document.createElement('div');
@@ -154,9 +183,9 @@
           who.textContent = 'kullanıcı: ' + (c.uid || '-') + ' ';
           const badge = document.createElement('span');
           badge.className = 'badge';
-          badge.textContent = c.status === 'pending_ai'
-            ? 'AI: ' + (c.aiVerdict ? c.aiVerdict + (c.aiConfidence ? ' (' + Math.round(c.aiConfidence * 100) + '%)' : '') : 'bekleniyor')
-            : 'manuel onay';
+          badge.textContent = c.aiVerdict
+            ? 'AI: ' + c.aiVerdict + (c.aiConfidence ? ' (' + Math.round(c.aiConfidence * 100) + '%)' : '') + (Number.isFinite(c.gpsDistanceM) ? ' • GPS ' + c.gpsDistanceM + ' m' : '')
+            : (c.status === 'pending_ai' ? 'AI: bekleniyor' : 'manuel onay');
           who.appendChild(badge);
           card.appendChild(who);
 
@@ -198,6 +227,67 @@
         });
       }
     }
+
+    // --- Topluluk ve işletme kuyruğu ---
+    (function () {
+      if (!configured) return;
+      const zarApi = firebase.app().functions('europe-west1').httpsCallable('zarApi', { timeout: 25000 });
+      const call = async (action, data = {}) => (await zarApi({ action, data })).data;
+      const qMsg = document.getElementById('queueMsg');
+      const qBox = document.getElementById('queue');
+      const fmt = (ms) => ms ? new Date(ms).toLocaleString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '-';
+      const SECTIONS = [
+        ['businesses', 'business', 'İşletme kayıtları', (b) => [`${b.name} — ${b.category}`, `${b.address} • tel: ${b.phone || '-'} • web: ${b.website || '-'} • e-posta: ${b.contactEmail || '-'} • vergi: ${b.taxNote || '-'}`, `konum: ${Number(b.lat).toFixed(5)}, ${Number(b.lon).toFixed(5)} • ${b.areaName || ''}`]],
+        ['campaigns', 'campaign', 'Kampanyalar (ödeme alındıysa onayla)', (c) => [`${c.businessName}: ${c.title}`, `${c.type === 'sponsored_face' ? 'Sponsorlu yüz' : 'Haftalık bonus'} • +${c.bonusPoints} • ${fmt(c.startAt)} → ${fmt(c.endAt)} • ${c.radiusKm} km`, c.description || '']],
+        ['events', 'event', 'İncelemedeki etkinlikler', (e) => [`${e.title} — ${e.hostName} (${e.hostType})`, `${fmt(e.startAt)} • ${e.place && e.place.name} • ${e.areaName || ''}`, `${e.description || ''}`, `denetim: ${e.moderation ? e.moderation.by + ' / ' + e.moderation.category + ' ' + (e.moderation.reason || '') : '-'}${e.hiddenByReports ? ' • şikayetle gizlendi' : ''}`]],
+        ['reports', 'report', 'Şikayetler (onay = hedefi kaldır)', (r) => [`${r.targetType}: ${r.targetId}`, `neden: ${r.reason}`, `bildiren: ${r.reporterUid} • ${fmt(r.at)}`]]
+      ];
+      async function load() {
+        qMsg.textContent = 'Yükleniyor…';
+        qBox.innerHTML = '';
+        let q;
+        try { q = await call('admin.queue'); } catch (e) { qMsg.textContent = 'Kuyruk alınamadı: ' + e.message; return; }
+        qMsg.textContent = '';
+        SECTIONS.forEach(([key, type, title, lines]) => {
+          const h = document.createElement('h3');
+          h.style.fontSize = '0.95rem';
+          h.textContent = `${title} (${q[key].length})`;
+          qBox.appendChild(h);
+          q[key].forEach((item) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            lines(item).filter(Boolean).forEach((t, i) => { const d = document.createElement('div'); d.className = i ? 'muted' : ''; d.textContent = t; card.appendChild(d); });
+            const note = document.createElement('input');
+            note.placeholder = 'not (isteğe bağlı, işletmeye görünür)';
+            card.appendChild(note);
+            const row = document.createElement('div');
+            row.className = 'row';
+            [['approve', 'ok', 'Onayla'], ['reject', 'bad', 'Reddet']].forEach(([decision, cls, label]) => {
+              const b = document.createElement('button');
+              b.className = cls;
+              b.textContent = label;
+              b.addEventListener('click', async () => {
+                b.disabled = true;
+                try { await call('admin.review', { type, id: item.id, decision, note: note.value }); card.remove(); }
+                catch (e) { alert(e.message); b.disabled = false; }
+              });
+              row.appendChild(b);
+            });
+            card.appendChild(row);
+            qBox.appendChild(card);
+          });
+        });
+      }
+      document.getElementById('btnQueueRefresh').addEventListener('click', load);
+      document.getElementById('btnBoost').addEventListener('click', async () => {
+        const m = document.getElementById('boostMsg');
+        try {
+          await call('admin.setBoost', { areaKey: document.getElementById('boostArea').value.trim(), multiplier: Number(document.getElementById('boostMult').value), hours: Number(document.getElementById('boostHours').value) });
+          m.textContent = 'Boost açıldı.';
+        } catch (e) { m.textContent = 'Olmadı: ' + e.message; }
+      });
+      firebase.auth().onAuthStateChanged((u) => { if (u) load(); });
+    })();
   </script>
 </body>
 </html>
