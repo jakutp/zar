@@ -24,7 +24,7 @@
 <body>
   <main>
     <h1>ZAR Privacy Policy</h1>
-    <p class="date">Last updated: 22 October 2026 • Version 2026-10-22 • <a href="terms.html">Terms of Use</a> • <a href="../privacy.html" hreflang="tr">Türkçe</a></p>
+    <p class="date">Last updated: 23 October 2026 • Version 2026-10-23 • <a href="terms.html">Terms of Use</a> • <a href="../privacy.html" hreflang="tr">Türkçe</a></p>
     <p>Data controller: Kutay Türker (ZAR developer). Contact: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. If the Turkish and English texts conflict, the Turkish text prevails.</p>
 
     <h2>In short</h2>
@@ -42,7 +42,7 @@
         <tr><td>Google Gemini – Vertex AI (via server)</td><td>Search text and candidate places; event titles/descriptions; your task proof photo and the expected place type</td><td>Understanding and choosing; moderating events; checking that a photo matches the task</td></tr>
         <tr><td>Overture Maps, OpenStreetMap Overpass and Nominatim (via server)</td><td>Coordinates</td><td>Fallback place data; finding your neighbourhood</td></tr>
         <tr><td>Google Firebase Authentication</td><td>Email and password (we never see the password), or an anonymous ID without an account</td><td>Sign-in, counting daily searches</td></tr>
-        <tr><td>Google Cloud Firestore</td><td>Profile (nickname, account type, home neighbourhood, optional Instagram handle), points ledger, visits and attendance, events, reports, business details, ad reward records, consent and completion records</td><td>Providing the service and keeping your records</td></tr>
+        <tr><td>Google Cloud Firestore</td><td>Profile (nickname, account type, home neighbourhood, optional Instagram handle), points ledger, visits and attendance, events, reports, business details, ad reward records, consent and completion records, Tanış pre-registration declaration</td><td>Providing the service and keeping your records</td></tr>
         <tr><td>Google Cloud Storage</td><td>Task proof photo (downscaled before upload; location/device metadata removed)</td><td>Photo task verification</td></tr>
         <tr><td>Google AdMob (only if you said "yes" to ads and watch one)</td><td>IP address, device info, ad interactions; advertising ID if you allow iOS tracking; your user ID to verify the reward</td><td>Rewarded ads and server-side reward verification</td></tr>
         <tr><td>OpenStreetMap tiles, Google Fonts, GitHub Pages (directly from your device)</td><td>Map area shown, standard file requests</td><td>Map, fonts, remote configuration</td></tr>
@@ -58,6 +58,9 @@
 
     <h2>Business accounts</h2>
     <p>Business name, category, address, location, phone, website, contact email and tax/legal name are reviewed by the developer for verification; the name, address and location of an approved business are public in sponsored suggestions and events. Business panel statistics (impressions, picks, verified visits, check-ins) are counts only; businesses never receive users' identities or locations.</p>
+
+    <h2>Tanış (coming soon, pre-registration only for now)</h2>
+    <p>Tanış is a separate section being built for users 18 and over to meet nearby people or find a company for outings; it is <b>not live in this version</b>. From the "tanış" tab on the neighbourhood screen you can currently only <b>pre-register</b>: we store your account identity and your declaration that you are 18 or older on the ZAR server (Firestore), so we can notify you when it launches. Pre-registration does not ask for your location, gender or who you want to meet, is never shown to anyone, and is not used for matching. When Tanış actually launches, we will ask for a full, separately and explicitly consented registration — including special-category data such as who you want to meet — and this page will be updated then. We delete your pre-registration automatically when you delete your account, or on request.</p>
 
     <h2>Ads (Google AdMob)</h2>
     <ul>
@@ -80,7 +83,7 @@
 
     <h2>Retention</h2>
     <ul>
-      <li>Account, profile, points ledger, visit/attendance records, photos and business details: <b>as long as your account is open</b>.</li>
+      <li>Account, profile, points ledger, visit/attendance records, photos, business details and Tanış pre-registration declaration: <b>as long as your account is open</b>.</li>
       <li>Location of places on your die: 24 hours. Google Maps coordinates in task records: at most 25 days (per Google Maps terms; place names are never stored).</li>
       <li>Anonymous sessions: automatically deleted 30 days after creation.</li>
       <li>Server logs: contain no search text or location; kept for Google Cloud's default period (30 days).</li>

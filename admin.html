@@ -247,7 +247,7 @@
         qBox.innerHTML = '';
         let q;
         try { q = await call('admin.queue'); } catch (e) { qMsg.textContent = 'Kuyruk alınamadı: ' + e.message; return; }
-        qMsg.textContent = '';
+        qMsg.textContent = `Tanış ön kayıt: ${q.datingWaitlistCount || 0} kişi`;
         SECTIONS.forEach(([key, type, title, lines]) => {
           const h = document.createElement('h3');
           h.style.fontSize = '0.95rem';

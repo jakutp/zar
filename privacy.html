@@ -24,7 +24,7 @@
 <body>
   <main>
     <h1>ZAR Gizlilik Politikası</h1>
-    <p class="date">Son güncelleme: 22 Ekim 2026 • Sürüm 2026-10-22 • <a href="terms.html">Kullanım Koşulları</a> • <a href="en/privacy.html" hreflang="en">English</a></p>
+    <p class="date">Son güncelleme: 23 Ekim 2026 • Sürüm 2026-10-23 • <a href="terms.html">Kullanım Koşulları</a> • <a href="en/privacy.html" hreflang="en">English</a></p>
     <p>Veri sorumlusu: Kutay Türker (ZAR geliştiricisi). İletişim: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>.</p>
 
     <h2>Kısaca</h2>
@@ -43,7 +43,7 @@
           <tr><td>Google Gemini – Vertex AI (sunucu üzerinden)</td><td>Arama metnin ve aday yer listesi; etkinlik başlığı/açıklaması; görev kanıt fotoğrafın ve beklenen mekân türü</td><td>İsteği anlamak ve seçmek; etkinlik metnini denetlemek; fotoğrafın görevle uyumunu kontrol etmek</td></tr>
           <tr><td>Overture Maps, OpenStreetMap Overpass ve Nominatim (sunucu üzerinden)</td><td>Konum koordinatları</td><td>Yedek yer verisi; konumun hangi mahalleye düştüğünü bulmak</td></tr>
           <tr><td>Google Firebase Authentication</td><td>E-posta ve parola (parola bize ulaşmaz) ya da hesapsız kullanımda anonim kimlik</td><td>Oturum açma, günlük arama hakkını saymak</td></tr>
-          <tr><td>Google Cloud Firestore</td><td>Profil (takma ad, hesap türü, ev mahallesi, isteğe bağlı Instagram adı), puan defteri, ziyaret ve katılım kayıtları, etkinlikler, şikayetler, işletme bilgileri, reklam ödül kayıtları, izin ve tamamlama kayıtları</td><td>Hizmeti sunmak ve kayıtlarının seninle kalması</td></tr>
+          <tr><td>Google Cloud Firestore</td><td>Profil (takma ad, hesap türü, ev mahallesi, isteğe bağlı Instagram adı), puan defteri, ziyaret ve katılım kayıtları, etkinlikler, şikayetler, işletme bilgileri, reklam ödül kayıtları, izin ve tamamlama kayıtları, Tanış ön kayıt beyanı</td><td>Hizmeti sunmak ve kayıtlarının seninle kalması</td></tr>
           <tr><td>Google Cloud Storage</td><td>Görev kanıt fotoğrafın (yüklemeden önce küçültülür, konum/cihaz bilgisi silinir)</td><td>Fotoğraflı görev doğrulaması</td></tr>
           <tr><td>Google AdMob (yalnız reklam iznine "evet" dersen ve reklam izlersen)</td><td>IP adresi, cihaz bilgisi, reklam etkileşimi; iOS izleme izni verirsen reklam kimliği; ödülün doğrulanması için kullanıcı kimliğin</td><td>Ödüllü reklam ve ödülün sunucuda doğrulanması</td></tr>
           <tr><td>OpenStreetMap harita karoları, Google Fonts, GitHub Pages (doğrudan cihazından)</td><td>Görüntülenen harita bölgesi, standart dosya istekleri</td><td>Harita, yazı tipleri, uzaktan yapılandırma</td></tr>
@@ -60,6 +60,9 @@
 
     <h2>İşletme hesapları</h2>
     <p>İşletme hesabıyla kaydettiğin işletme adı, kategori, adres, konum, telefon, web sitesi, iletişim e-postası ve vergi/unvan bilgisi doğrulama için geliştirici tarafından incelenir; onaylanan işletmenin adı, adresi ve konumu sponsorlu öneri ve etkinliklerde herkese görünür. İşletme panelindeki istatistikler (zarda gösterim, seçilme, doğrulanmış ziyaret, check-in) yalnızca sayıdır; işletmeye kullanıcıların kimliği ya da konumu verilmez.</p>
+
+    <h2>Tanış (yakında, şu an yalnızca ön kayıt)</h2>
+    <p>Tanış, yakınındaki insanlarla tanışmana ya da keşif arkadaşı bulmana yardımcı olacak, 18 yaş ve üzeri için ayrı bir bölüm olarak hazırlanıyor; <b>bu sürümde henüz yayında değil</b>. Mahalle ekranındaki "tanış" sekmesinden şu an yalnızca <b>ön kayıt</b> yapabilirsin: hesap kimliğini ve 18 yaşından büyük olduğun beyanını ZAR sunucusunda (Firestore) tutarız, böylece özellik açıldığında sana haber verebiliriz. Ön kayıtta konum, cinsiyet, kiminle tanışmak istediğin gibi bir bilgi istenmez, kimseye gösterilmez ve eşleştirme için kullanılmaz. Tanış fiilen açıldığında -kimlerle tanışmak istediğin gibi özel nitelikli bir veri de dahil- ayrı ve açık bir rızanla tam kayıt yapman istenecek; bu sayfa o zaman güncellenecek. Ön kayıt bilgini hesabını sildiğinde otomatik, ya da bize ulaşıp istediğinde sileriz.</p>
 
     <h2>Reklamlar (Google AdMob)</h2>
     <ul>
@@ -82,7 +85,7 @@
 
     <h2>Saklama süreleri</h2>
     <ul>
-      <li>Hesap, profil, puan defteri, ziyaret/katılım kayıtları, fotoğraflar ve işletme bilgileri: <b>hesabın açık kaldığı sürece</b>.</li>
+      <li>Hesap, profil, puan defteri, ziyaret/katılım kayıtları, fotoğraflar, işletme bilgileri ve Tanış ön kayıt beyanı: <b>hesabın açık kaldığı sürece</b>.</li>
       <li>Zarına konan yerlerin konumu: 24 saat. Görev kayıtlarındaki Google Haritalar konumu: en çok 25 gün (Google Haritalar şartları gereği; mekânın adı hiç saklanmaz).</li>
       <li>Hesapsız (anonim) oturumlar: oluşturulduktan 30 gün sonra otomatik silinir.</li>
       <li>Sunucu günlükleri: arama metni ve konum içermez; Google Cloud'un varsayılan süresince (30 gün) tutulur.</li>
