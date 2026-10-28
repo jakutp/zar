@@ -24,7 +24,7 @@
 <body>
   <main>
     <h1>ZAR Privacy Policy</h1>
-    <p class="date">Last updated: 23 October 2026 • Version 2026-10-23 • <a href="terms.html">Terms of Use</a> • <a href="../privacy.html" hreflang="tr">Türkçe</a></p>
+    <p class="date">Last updated: 29 October 2026 • Version 2026-10-29 • <a href="terms.html">Terms of Use</a> • <a href="../privacy.html" hreflang="tr">Türkçe</a></p>
     <p>Data controller: Kutay Türker (ZAR developer). Contact: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>. If the Turkish and English texts conflict, the Turkish text prevails.</p>
 
     <h2>In short</h2>
@@ -41,8 +41,8 @@
         <tr><td>Google Maps Platform – Places API (via server)</td><td>Area around the location and a short search phrase (e.g. "cafe"); not your identity</td><td>Nearby places, ratings and opening hours</td></tr>
         <tr><td>Google Gemini – Vertex AI (via server)</td><td>Search text and candidate places; event titles/descriptions; your task proof photo and the expected place type</td><td>Understanding and choosing; moderating events; checking that a photo matches the task</td></tr>
         <tr><td>Overture Maps, OpenStreetMap Overpass and Nominatim (via server)</td><td>Coordinates</td><td>Fallback place data; finding your neighbourhood</td></tr>
-        <tr><td>Google Firebase Authentication</td><td>Email and password (we never see the password), or an anonymous ID without an account</td><td>Sign-in, counting daily searches</td></tr>
-        <tr><td>Google Cloud Firestore</td><td>Profile (nickname, account type, home neighbourhood, optional Instagram handle), points ledger, visits and attendance, events, reports, business details, ad reward records, consent and completion records, Tanış pre-registration declaration</td><td>Providing the service and keeping your records</td></tr>
+        <tr><td>Google Firebase Authentication</td><td>Email and password (we never see the password), or an anonymous ID without an account</td><td>Sign-in, counting daily searches; sending email verification and password reset emails</td></tr>
+        <tr><td>Google Cloud Firestore</td><td>Profile (nickname, account type, home neighbourhood, optional Instagram handle), points ledger, visits and attendance, events, reports, business details, ad reward records, consent and completion records, Tanış pre-registration declaration; records of accepting the terms and giving/withdrawing consents (date, text version, installation ID, device type and ID, app version) and account events (sign-up, verification email, email verification and account deletion dates)</td><td>Providing the service and keeping your records</td></tr>
         <tr><td>Google Cloud Storage</td><td>Task proof photo (downscaled before upload; location/device metadata removed)</td><td>Photo task verification</td></tr>
         <tr><td>Google AdMob (only if you said "yes" to ads and watch one)</td><td>IP address, device info, ad interactions; advertising ID if you allow iOS tracking; your user ID to verify the reward</td><td>Rewarded ads and server-side reward verification</td></tr>
         <tr><td>OpenStreetMap tiles, Google Fonts, GitHub Pages (directly from your device)</td><td>Map area shown, standard file requests</td><td>Map, fonts, remote configuration</td></tr>
@@ -86,17 +86,18 @@
       <li>Account, profile, points ledger, visit/attendance records, photos, business details and Tanış pre-registration declaration: <b>as long as your account is open</b>.</li>
       <li>Location of places on your die: 24 hours. Google Maps coordinates in task records: at most 25 days (per Google Maps terms; place names are never stored).</li>
       <li>Anonymous sessions: automatically deleted 30 days after creation.</li>
+      <li>Records of accepting the terms, giving/withdrawing consents and account events: <b>10 years</b> (the general limitation period), so we can prove which text you accepted and how you gave your consents; kept for this period even if you delete your account, visible only to the authorised team and not used for any other purpose.</li>
       <li>Server logs: contain no search text or location; kept for Google Cloud's default period (30 days).</li>
     </ul>
 
     <h2>Deleting your account</h2>
-    <p><b>Settings → Account → delete my account</b> permanently deletes your profile, nickname, points ledger, neighbourhood and visit records, attendance, reports, ad reward records, task records and photos; events you created are taken down and your businesses are unlinked from you. Data is removed from live systems immediately and from Google's backups within 30 days.</p>
+    <p><b>Settings → Account → delete my account</b> permanently deletes your profile, nickname, points ledger, neighbourhood and visit records, attendance, reports, ad reward records, task records and photos; events you created are taken down and your businesses are unlinked from you. Data is removed from live systems immediately and from Google's backups within 30 days. Your terms/consent records and account events (including the deletion date) are excluded and kept for the period stated under "Retention".</p>
 
     <h2>Stored on your device</h2>
-    <p>Last location, theme and settings, temporary service caches, suggestion preferences, on-device history and consent records (including an installation ID and the iOS identifier for vendor) are kept in your device's local storage. Deleting the app removes them.</p>
+    <p>Last location, theme and settings, temporary service caches, suggestion preferences, on-device history and consent records (including an installation ID and the iOS identifier for vendor) are kept in your device's local storage. Deleting the app removes them; the server copy of your terms/consent records stays for the period stated under "Retention". These records are not shown in the app; you can request a copy at the contact address below.</p>
 
     <h2>Legal bases</h2>
-    <p>Search, points, events and account features: performance of the service you request (KVKK art. 5/2-c); security, abuse prevention and moderation: legitimate interest (art. 5/2-f); ads and other optional purposes: your explicit consent (art. 5/1 and art. 9). The app is not offered in the European Union or mainland China App Stores.</p>
+    <p>Search, points, events and account features: performance of the service you request (KVKK art. 5/2-c); security, abuse prevention and moderation: legitimate interest (art. 5/2-f); keeping terms, consent and account event records: our legal obligations and the establishment, exercise or protection of a right (art. 5/2-ç and 5/2-e); ads and other optional purposes: your explicit consent (art. 5/1 and art. 9). The app is not offered in the European Union or mainland China App Stores.</p>
 
     <h2>Children</h2>
     <p>ZAR is not directed at children. To create an account you confirm you are over 13; if you are 13-17 a parent/guardian must consent. We delete accounts of children under 13 when we learn of them.</p>

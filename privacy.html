@@ -24,7 +24,7 @@
 <body>
   <main>
     <h1>ZAR Gizlilik Politikası</h1>
-    <p class="date">Son güncelleme: 23 Ekim 2026 • Sürüm 2026-10-23 • <a href="terms.html">Kullanım Koşulları</a> • <a href="en/privacy.html" hreflang="en">English</a></p>
+    <p class="date">Son güncelleme: 29 Ekim 2026 • Sürüm 2026-10-29 • <a href="terms.html">Kullanım Koşulları</a> • <a href="en/privacy.html" hreflang="en">English</a></p>
     <p>Veri sorumlusu: Kutay Türker (ZAR geliştiricisi). İletişim: <a href="https://github.com/jakutp/zar/issues">github.com/jakutp/zar/issues</a>.</p>
 
     <h2>Kısaca</h2>
@@ -42,8 +42,8 @@
           <tr><td>Google Maps Platform – Places API (sunucu üzerinden)</td><td>Konum çevresi ve kısa bir arama ifadesi (ör. "kafe"); kimliğin gönderilmez</td><td>Yakındaki yerler, puanları ve çalışma saatleri</td></tr>
           <tr><td>Google Gemini – Vertex AI (sunucu üzerinden)</td><td>Arama metnin ve aday yer listesi; etkinlik başlığı/açıklaması; görev kanıt fotoğrafın ve beklenen mekân türü</td><td>İsteği anlamak ve seçmek; etkinlik metnini denetlemek; fotoğrafın görevle uyumunu kontrol etmek</td></tr>
           <tr><td>Overture Maps, OpenStreetMap Overpass ve Nominatim (sunucu üzerinden)</td><td>Konum koordinatları</td><td>Yedek yer verisi; konumun hangi mahalleye düştüğünü bulmak</td></tr>
-          <tr><td>Google Firebase Authentication</td><td>E-posta ve parola (parola bize ulaşmaz) ya da hesapsız kullanımda anonim kimlik</td><td>Oturum açma, günlük arama hakkını saymak</td></tr>
-          <tr><td>Google Cloud Firestore</td><td>Profil (takma ad, hesap türü, ev mahallesi, isteğe bağlı Instagram adı), puan defteri, ziyaret ve katılım kayıtları, etkinlikler, şikayetler, işletme bilgileri, reklam ödül kayıtları, izin ve tamamlama kayıtları, Tanış ön kayıt beyanı</td><td>Hizmeti sunmak ve kayıtlarının seninle kalması</td></tr>
+          <tr><td>Google Firebase Authentication</td><td>E-posta ve parola (parola bize ulaşmaz) ya da hesapsız kullanımda anonim kimlik</td><td>Oturum açma, günlük arama hakkını saymak; e-posta doğrulama ve parola sıfırlama e-postalarını göndermek</td></tr>
+          <tr><td>Google Cloud Firestore</td><td>Profil (takma ad, hesap türü, ev mahallesi, isteğe bağlı Instagram adı), puan defteri, ziyaret ve katılım kayıtları, etkinlikler, şikayetler, işletme bilgileri, reklam ödül kayıtları, izin ve tamamlama kayıtları, Tanış ön kayıt beyanı; sözleşme kabulü ve izin verme/geri çekme kayıtların (tarih, metin sürümü, kurulum kimliği, cihaz türü ve kimliği, uygulama sürümü) ile hesap olayların (hesap açılışı, doğrulama e-postası, e-posta doğrulama ve hesap silme tarihleri)</td><td>Hizmeti sunmak ve kayıtlarının seninle kalması</td></tr>
           <tr><td>Google Cloud Storage</td><td>Görev kanıt fotoğrafın (yüklemeden önce küçültülür, konum/cihaz bilgisi silinir)</td><td>Fotoğraflı görev doğrulaması</td></tr>
           <tr><td>Google AdMob (yalnız reklam iznine "evet" dersen ve reklam izlersen)</td><td>IP adresi, cihaz bilgisi, reklam etkileşimi; iOS izleme izni verirsen reklam kimliği; ödülün doğrulanması için kullanıcı kimliğin</td><td>Ödüllü reklam ve ödülün sunucuda doğrulanması</td></tr>
           <tr><td>OpenStreetMap harita karoları, Google Fonts, GitHub Pages (doğrudan cihazından)</td><td>Görüntülenen harita bölgesi, standart dosya istekleri</td><td>Harita, yazı tipleri, uzaktan yapılandırma</td></tr>
@@ -88,17 +88,18 @@
       <li>Hesap, profil, puan defteri, ziyaret/katılım kayıtları, fotoğraflar, işletme bilgileri ve Tanış ön kayıt beyanı: <b>hesabın açık kaldığı sürece</b>.</li>
       <li>Zarına konan yerlerin konumu: 24 saat. Görev kayıtlarındaki Google Haritalar konumu: en çok 25 gün (Google Haritalar şartları gereği; mekânın adı hiç saklanmaz).</li>
       <li>Hesapsız (anonim) oturumlar: oluşturulduktan 30 gün sonra otomatik silinir.</li>
+      <li>Sözleşme kabulü, izin verme/geri çekme kayıtları ve hesap olayları: hangi metni ne zaman kabul ettiğini ve izinlerini nasıl verdiğini ispatlayabilmemiz için <b>10 yıl</b> (genel zamanaşımı süresi); hesabın silinse de bu süre boyunca saklanır, yalnız yetkili ekip görür ve başka amaçla kullanılmaz.</li>
       <li>Sunucu günlükleri: arama metni ve konum içermez; Google Cloud'un varsayılan süresince (30 gün) tutulur.</li>
     </ul>
 
     <h2>Hesabını silmek</h2>
-    <p><b>Ayarlar → Hesap → hesabımı sil</b> ile hesabını kalıcı olarak silebilirsin. Bu; profilini, takma adını, puan defterini, mahalle ve ziyaret kayıtlarını, katılımlarını, şikayetlerini, reklam ödül kayıtlarını, görev kayıtlarını ve fotoğraflarını siler; açtığın etkinlikler yayından kaldırılır, işletmelerinin seninle bağı koparılır. Veriler canlı sistemden hemen, Google'ın yedeklerinden en geç 30 gün içinde silinir.</p>
+    <p><b>Ayarlar → Hesap → hesabımı sil</b> ile hesabını kalıcı olarak silebilirsin. Bu; profilini, takma adını, puan defterini, mahalle ve ziyaret kayıtlarını, katılımlarını, şikayetlerini, reklam ödül kayıtlarını, görev kayıtlarını ve fotoğraflarını siler; açtığın etkinlikler yayından kaldırılır, işletmelerinin seninle bağı koparılır. Veriler canlı sistemden hemen, Google'ın yedeklerinden en geç 30 gün içinde silinir. Sözleşme ve izin kayıtların ile hesap olayların (silme tarihi dahil) bu silmenin dışındadır ve "Saklama süreleri"nde yazılan süre boyunca tutulur.</p>
 
     <h2>Cihazında saklananlar</h2>
-    <p>Son konum, tema ve ayarlar, servis yanıtlarının geçici önbelleği, öneri tercih ağırlıkların, cihazdaki keşif geçmişin ve sözleşme/izin kayıtların (kurulum kimliği ve iOS tedarikçi kimliği dahil) cihazının yerel depolamasında tutulur. Uygulamayı silmek bunları kaldırır.</p>
+    <p>Son konum, tema ve ayarlar, servis yanıtlarının geçici önbelleği, öneri tercih ağırlıkların, cihazdaki keşif geçmişin ve sözleşme/izin kayıtların (kurulum kimliği ve iOS tedarikçi kimliği dahil) cihazının yerel depolamasında tutulur. Uygulamayı silmek bunları kaldırır; sözleşme/izin kayıtlarının sunucudaki kopyası ise "Saklama süreleri"ndeki süre boyunca kalır. Bu kayıtlar uygulamada gösterilmez; bir kopyasını aşağıdaki iletişim adresinden isteyebilirsin.</p>
 
     <h2>Hukuki sebepler</h2>
-    <p>Arama, puan, etkinlik ve hesap işlemleri için verilerin, istediğin hizmeti sunmak üzere (KVKK md. 5/2-c, sözleşmenin ifası); güvenlik, kötüye kullanımı önleme ve içerik denetimi için meşru menfaat (md. 5/2-f); reklam ve diğer isteğe bağlı amaçlar için açık rızan (md. 5/1 ve md. 9) ile işlenir. Uygulama Avrupa Birliği ve Çin anakarası App Store'larında sunulmamaktadır.</p>
+    <p>Arama, puan, etkinlik ve hesap işlemleri için verilerin, istediğin hizmeti sunmak üzere (KVKK md. 5/2-c, sözleşmenin ifası); güvenlik, kötüye kullanımı önleme ve içerik denetimi için meşru menfaat (md. 5/2-f); sözleşme kabulü, izin ve hesap olayı kayıtlarının saklanması için hukuki yükümlülüklerimiz ve bir hakkın tesisi, kullanılması veya korunması (md. 5/2-ç ve 5/2-e); reklam ve diğer isteğe bağlı amaçlar için açık rızan (md. 5/1 ve md. 9) ile işlenir. Uygulama Avrupa Birliği ve Çin anakarası App Store'larında sunulmamaktadır.</p>
 
     <h2>Çocuklar</h2>
     <p>ZAR çocuklara yönelik değildir. Hesap açarken 13 yaşından büyük olduğunu beyan edersin; 13-17 yaş arasındaysan veli/vasi onayı gerekir. 13 yaşından küçük birinin hesabını öğrendiğimizde sileriz.</p>

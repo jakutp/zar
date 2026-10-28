@@ -60,6 +60,15 @@
         <div class="row"><input id="boostMult" type="number" min="1" max="3" step="0.25" value="2" style="width:120px"><input id="boostHours" type="number" min="0.5" max="72" step="0.5" value="1" style="width:120px"><button id="btnBoost" class="primary">Boost aç</button></div>
         <div id="boostMsg" class="muted"></div>
       </div>
+
+      <!-- Hukuki kayıtlar (zarApi admin.records): sözleşme/izin geçmişi ve hesap olayları -->
+      <div class="card" style="margin-top: 16px;">
+        <strong>Kullanıcı kayıtları</strong>
+        <p class="muted">Sözleşme kabulü, izin verme/geri çekme, hesap açılışı, doğrulama e-postası, e-posta doğrulama ve hesap silme. E-posta, uid ya da kurulum kimliği (<code>zar-…</code>) ile ara. Kullanıcıya gösterilmez; talep ya da anlaşmazlık olursa buradan bakılır.</p>
+        <div class="row"><input id="recQuery" placeholder="e-posta, uid ya da zar-…" style="flex:1; margin:0"><button id="btnRecords" class="primary">Ara</button></div>
+        <div id="recMsg" class="muted"></div>
+        <div id="recBox"></div>
+      </div>
     </div>
   </main>
 
@@ -287,6 +296,43 @@
         } catch (e) { m.textContent = 'Olmadı: ' + e.message; }
       });
       firebase.auth().onAuthStateChanged((u) => { if (u) load(); });
+
+      // Kullanıcı kayıtları: tüm alanlar textContent ile basılır
+      const EVENT_NAMES = { signup: 'hesap açıldı', email_verification_sent: 'doğrulama e-postası gönderildi', email_verified: 'e-posta doğrulandı', account_deleted: 'hesap silindi' };
+      const CONSENT_NAMES = { terms_accepted: 'koşullar kabul edildi', consent: 'izin verildi', withdraw: 'izin geri çekildi' };
+      const full = (ms) => ms ? new Date(ms).toLocaleString('tr-TR') : '-';
+      const line = (box, text, muted) => { const d = document.createElement('div'); if (muted) d.className = 'muted'; d.textContent = text; box.appendChild(d); };
+      document.getElementById('btnRecords').addEventListener('click', async () => {
+        const msg = document.getElementById('recMsg');
+        const box = document.getElementById('recBox');
+        box.innerHTML = '';
+        msg.textContent = 'Aranıyor…';
+        let r;
+        try { r = await call('admin.records', { query: document.getElementById('recQuery').value.trim() }); } catch (e) { msg.textContent = 'Olmadı: ' + e.message; return; }
+        msg.textContent = `${r.users.length} hesap • ${r.events.length} hesap olayı • ${r.consent.length} izin kaydı • kurulumlar: ${r.installIds.join(', ') || '-'}`;
+        r.users.forEach((u) => {
+          const c = document.createElement('div'); c.className = 'card';
+          line(c, `${u.email || '-'} • ${u.nickname || 'takma ad yok'} • ${u.accountType || 'kişisel'}`);
+          line(c, `uid: ${u.uid} • açılış: ${full(u.createdAt)} • e-posta doğrulama: ${u.emailVerifiedAt ? full(u.emailVerifiedAt) : 'yok'}`, true);
+          box.appendChild(c);
+        });
+        if (r.events.length) {
+          const c = document.createElement('div'); c.className = 'card';
+          line(c, 'Hesap olayları');
+          r.events.forEach((e) => line(c, `${full(e.at)} • ${EVENT_NAMES[e.type] || e.type} • ${e.email || '-'}${e.installId ? ' • ' + e.installId : ''}${e.accountType ? ' • ' + e.accountType : ''} • uid ${e.uid}`, true));
+          box.appendChild(c);
+        }
+        r.consent.forEach((x) => {
+          const c = document.createElement('div'); c.className = 'card';
+          const ch = x.choices || {};
+          line(c, `${full(x.at)} • ${x.kind === 'link' ? 'kurulum hesaba bağlandı' : 'izin kaydı'} • ${x.anonymous ? 'hesapsız' : (x.email || 'hesap')} • ${x.installId}`);
+          line(c, `koşullar ${x.termsVersion || '-'} / gizlilik ${x.privacyVersion || '-'} • kabul ${x.termsAcceptedAt || '-'} • dil ${x.lang} • geliştirme: ${ch.improve} • reklam: ${ch.ads} • pazarlama: ${ch.marketing}`, true);
+          const dv = x.device || {};
+          line(c, `cihaz: ${dv.kind || '-'} ${dv.id || ''} • uygulama ${dv.app || '-'} (${dv.build || '-'}) • uid ${x.uid}`, true);
+          (x.events || []).forEach((e) => line(c, `  ${e.at || '-'} • ${CONSENT_NAMES[e.action] || e.action}${e.purpose ? ' • ' + e.purpose + ': ' + (e.value ? 'evet' : 'hayır') : ''} • metin ${e.terms || '-'}`, true));
+          box.appendChild(c);
+        });
+      });
     })();
   </script>
 </body>
